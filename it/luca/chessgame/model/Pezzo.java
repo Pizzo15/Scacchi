@@ -5,8 +5,8 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 
 public abstract class Pezzo {
-	private Color color;
-	private ImageIcon image;
+	private final Color color;
+	private final ImageIcon image;
 	
 	/**
 	 * Un pezzo è identificato dal colore e dall'icona che lo rappresenta

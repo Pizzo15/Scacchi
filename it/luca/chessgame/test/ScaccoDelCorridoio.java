@@ -21,8 +21,7 @@ public class ScaccoDelCorridoio {
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
 	private Mover mover;
-	private Simulate simulate;
-		
+	
 	@Test
 	public void testScaccoDelCorridoio(){
 		// inizializzo la scacchiera
@@ -48,7 +47,7 @@ public class ScaccoDelCorridoio {
 		c.set(7, 1, new Re(black));
 		c.set(7, 2, new Pedone(black));
 		
-		simulate = new Simulate(c, c = c.swap(4, 1, 4, 7));
+		new Simulate(c, c = c.swap(4, 1, 4, 7));
 		
 		mover = new Mover(new TilesModel(c));
 			

@@ -20,8 +20,6 @@ public class ScaccoDelCantone {
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
 	private Mover mover;
-	private Simulate simulate;
-	
 	@Test
 	public void testScaccoDelCantone(){
 		// inizializzo la scacchiera
@@ -56,7 +54,7 @@ public class ScaccoDelCantone {
 		c.set(6, 2, new Pedone(black));
 		c.set(7, 3, new Pedone(black));
 
-		simulate = new Simulate(c, c = c.swap(2, 7, 5, 4), c = c.swap(3, 2, 5, 4), c = c.swap(7, 4, 7, 3),
+		new Simulate(c, c = c.swap(2, 7, 5, 4), c = c.swap(3, 2, 5, 4), c = c.swap(7, 4, 7, 3),
 				c = c.swap(6, 2, 7, 3), c = c.swap(7, 7, 7, 3));
 		
 		mover = new Mover(new TilesModel(c));

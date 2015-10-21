@@ -17,7 +17,6 @@ import org.junit.Test;
  */
 public class ScaccoDiGreco {
 	private Configuration c = new ArrayConfiguration();
-	private Simulate simulate;
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
 	private Mover mover;
@@ -56,7 +55,7 @@ public class ScaccoDiGreco {
 		c.set(7, 6, new Pedone(white));
 		c.set(7, 7, new Torre(white));
 		
-		simulate = new Simulate(c, c = c.swap(3, 3, 4, 1), c = c.swap(6, 0, 7, 0),
+		new Simulate(c, c = c.swap(3, 3, 4, 1), c = c.swap(6, 0, 7, 0),
 				c = c.swap(4, 1, 6, 2), c = c.swap(7, 1, 6, 2), c = c.swap(7, 6, 6, 5), 
 				c = c.swap(3, 0, 7, 4), c = c.swap(7, 7, 7, 4));
 		

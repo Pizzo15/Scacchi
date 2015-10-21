@@ -19,7 +19,6 @@ import org.junit.Test;
  */
 public class ScaccoDelleSpalline{
 	private Configuration c = new ArrayConfiguration();
-	private Simulate simulate;
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
 	private Mover mover;
@@ -46,7 +45,7 @@ public class ScaccoDelleSpalline{
 		c.set(6, 7, new Re(white));
 		c.set(7, 5, new Pedone(white));
 		
-		simulate = new Simulate(c, c = c.swap(6, 4, 4, 2), c = c.swap(6, 0, 7, 1),
+		new Simulate(c, c = c.swap(6, 4, 4, 2), c = c.swap(6, 0, 7, 1),
 				c = c.swap(5, 2, 7, 2));
 			
 		mover = new Mover(new TilesModel(c));

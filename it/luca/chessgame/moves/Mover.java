@@ -229,29 +229,15 @@ public class Mover {
 	 *  - i colori dei pezzi sono diversi
 	 *  - il turno è coerente col pezzo da muovere
 	 *  - le coordinate sono raggiungibili dal pezzo mosso
-	 *  - il re non è sotto scacco: in tal caso posso muovere solo il re
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 * @return
 	 */
 	private boolean moveLegal(int fromX, int fromY, int toX, int toY){
-		boolean legal = checkColor(fromX, fromY, toX, toY) && checkTurn(fromX, fromY, toX, toY)
+		return checkColor(fromX, fromY, toX, toY) && checkTurn(fromX, fromY, toX, toY)
 				&& checkMove(fromX, fromY, toX, toY);
-		
-		// se il re non è sotto scacco posso muovere ogni pezzo
-		if(scacco(getKingPosition().x, getKingPosition().y).isEmpty())
-			return legal;
-		else
-		// altrimenti devo muovere il re
-			return legal && model.at(fromX, fromY) instanceof Re;
 	}
 
 	/**
 	 * Ritorna true se uno dei giocatori ha dato scacco matto all'
 	 * altro. In tal caso termina la partita.
-	 * @return
 	 */
 	public boolean scaccoMatto(){
 		ArrayList<Point> free = freeTilesAroundKing();
@@ -313,11 +299,6 @@ public class Mover {
 	/**
 	 * Controlla che la mossa della torre non richieda un salto.
 	 * In tal caso la blocca ritornando false.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 * @return
 	 */
 	private boolean checkRookJump(int fromX, int fromY, int toX, int toY){
 		// considero le 4 direzioni di movimento possibili per una torre
@@ -356,11 +337,6 @@ public class Mover {
 	/**
 	 * Controlla che la mossa dell'alfiere non richieda un salto.
 	 * In tal caso la blocca ritornando false.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 * @return
 	 */
 	private boolean checkBishopJump(int fromX, int fromY, int toX, int toY){
 		// considero le 4 direzioni di movimento possibili per un alfiere
@@ -390,7 +366,6 @@ public class Mover {
 	
 	/**
 	 * Ritorna le coordinate del re del giocatore che muove.
-	 * @return
 	 */
 	private Point getKingPosition(){
 		Color kingColor = turno ? Color.WHITE : Color.BLACK;
@@ -405,17 +380,13 @@ public class Mover {
 		
 	/**
 	 * Ritorna tutte le coordinate raggiungibili dal pezzo in (x, y)
-	 * @param x
-	 * @param y
-	 * @return
 	 */
 	public ArrayList<Point> reachableTilesFrom(int x, int y){
 		ArrayList<Point> res = new ArrayList<Point>();
 		
 		for(int toX = 0; toX < 8; toX++)
 			for(int toY = 0; toY < 8; toY++)
-				if(model.at(toX, toY) instanceof CasellaVuota && 
-						isMoveLegal(x, y, toX, toY))
+				if(isMoveLegal(x, y, toX, toY))
 					res.add(new Point(toX, toY));
 		
 		return res;
@@ -424,7 +395,6 @@ public class Mover {
 	/**
 	 * Ritorna le coordinate delle caselle libere attorno al re
 	 * nella configurazione attuale.
-	 * @return
 	 */
 	private ArrayList<Point> freeTilesAroundKing(){
 		ArrayList<Point> freeTiles = new ArrayList<Point>();	

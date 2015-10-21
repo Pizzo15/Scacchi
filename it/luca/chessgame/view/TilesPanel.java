@@ -81,24 +81,27 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 	}
 	
 	/**
-	 * Marca con un'icona le caselle raggiungibili dal pezzo alle coordinate 
+	 * Evidenzia le caselle raggiungibili dal pezzo alle coordinate 
 	 * (x, y), se questo può muovere.
 	 */
 	public void highlightReachableTiles(int x, int y){
 		ArrayList<Point> reachable = controller.getMover().reachableTilesFrom(x, y);
 		
-		for(Point p: reachable)
-			panels[p.x][p.y].add(new JLabel(new ImageIcon("img/pointicon.png")));
+		for(Point p: reachable){
+			if(model.at(p.x, p.y) instanceof CasellaVuota)
+				panels[p.x][p.y].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.YELLOW));
+			else
+				panels[p.x][p.y].setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.RED));
+		}
 	}
 	
 	/**
-	 * Elimina le icone aggiunte dal metodo sopra.
+	 * Elimina i bordi aggiunti dal metodo sopra.
 	 */
 	private void cleanReachableTiles(){
 		for(int x = 0; x < 8; x++)
 			for(int y = 0; y < 8; y++)
-				if(model.at(x, y) instanceof CasellaVuota)
-					panels[x][y].removeAll();
+				panels[x][y].setBorder(null);
 	}
 	
 	@Override

@@ -14,6 +14,8 @@ import javax.swing.*;
  * @author luca
  */
 public class LogDialog extends JDialog {
+	private static final long serialVersionUID = 1L;
+
 	public LogDialog(JFrame owner, Controller controller){
 		setTitle("Registro mosse");
 		setResizable(false);

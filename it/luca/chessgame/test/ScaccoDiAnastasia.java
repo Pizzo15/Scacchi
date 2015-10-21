@@ -21,7 +21,6 @@ public class ScaccoDiAnastasia {
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
 	private Mover mover;
-	private Simulate simulate;
 	
 	@Test
 	public void testScaccoDiAnastasia(){
@@ -50,7 +49,7 @@ public class ScaccoDiAnastasia {
 		c.set(7, 6, new Re(white));
 		c.set(6, 7, new Pedone(white));
 
-		simulate = new Simulate(c, c = c.swap(4, 1, 5, 3), c = c.swap(5, 0, 6, 0),
+		new Simulate(c, c = c.swap(4, 1, 5, 3), c = c.swap(5, 0, 6, 0),
 				c = c.swap(2, 3, 5, 0), c = c.swap(6, 0, 5, 0), c = c.swap(2, 7, 2, 0));
 		
 		mover = new Mover(new TilesModel(c));

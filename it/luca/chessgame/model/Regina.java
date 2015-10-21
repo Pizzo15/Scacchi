@@ -1,7 +1,6 @@
 package it.luca.chessgame.model;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import javax.swing.ImageIcon;
 
