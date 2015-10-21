@@ -1,16 +1,20 @@
 package it.luca.chessgame.test;
 
 import static org.junit.Assert.assertTrue;
-import it.luca.chessgame.controller.ChessController;
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
-import it.luca.chessgame.view.ChessFrame;
-import it.luca.chessgame.view.TilesPanel;
 
 import java.awt.Color;
 
 import org.junit.Test;
 
+/**
+ * Classe di test per la combinazione di matto del Cantone:
+ * con una casa di fuga bloccata, la torre supportata dall'alfiere
+ * scende in un vertice della scacchiera e dà matto.
+ * 
+ * @author luca
+ */
 public class ScaccoDelCantone {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;

@@ -4,11 +4,9 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.util.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import it.luca.chessgame.model.*;
-import it.luca.chessgame.view.View;
 
 public class Mover {
 	private final Model model;
@@ -23,7 +21,7 @@ public class Mover {
 	}
 	
 	/**
-	 * Esegue la mossa del pezzo (fromX, fromY) -> (toX, toY)
+	 * Esegue la mossa (fromX, fromY) -> (toX, toY)
 	 * se questa è lecita.
 	 * @param fromX
 	 * @param fromY
@@ -104,7 +102,7 @@ public class Mover {
 	
 	/**
 	 * Imposta la configurazione a quella iniziale e svuota i registri delle mosse
-	 * effettuate
+	 * effettuate.
 	 */
 	private void setNewGame(){
 		turno = true;

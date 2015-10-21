@@ -1,5 +1,13 @@
 package it.luca.chessgame.moves;
 
+/**
+ * Classe che descrive una mossa in base alle
+ * coordinate di partenza e di arrivo delle caselle
+ * e a un valore boolean che indica se si tratta
+ * di una cattura.
+ * 
+ * @author luca
+ */
 public class Move {
 	private int fromX, toX;
 	private int fromY, toY;
@@ -24,8 +32,6 @@ public class Move {
 	/**
 	 * L'array ha orientamento crescente. Devo invertire le ordinate
 	 * in modo che l'ordinamento stampato risulti decrescente.
-	 * @param y
-	 * @return
 	 */
 	private int invertiOrdinate(int y){
 		return Math.abs(y - 7) + 1;

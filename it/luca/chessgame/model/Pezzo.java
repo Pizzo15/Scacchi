@@ -18,13 +18,6 @@ public abstract class Pezzo {
 		this.image = image;
 	}
 	
-	public void setColor(Color color){
-		this.color = color;
-	}
-	
 	public Color getColor(){ return this.color; }
-	public void setImage(ImageIcon image){
-		this.image = image;
-	}
 	public ImageIcon getImage(){ return this.image; }
 }

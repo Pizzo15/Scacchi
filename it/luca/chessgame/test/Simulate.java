@@ -4,10 +4,10 @@ import it.luca.chessgame.model.*;
 import it.luca.chessgame.view.*;
 
 /**
- * Mostra a schermo la configurazione di una scacchiera
+ * Mostra a video una scacchiera in varie configurazioni a intervalli 
+ * regolari al fine di simulare una combinazione di mosse.
  * 
  * @author luca
- *
  */
 public class Simulate {
 	ChessFrame frame = new ChessFrame();

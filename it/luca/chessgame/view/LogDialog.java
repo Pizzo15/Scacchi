@@ -1,17 +1,18 @@
 package it.luca.chessgame.view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 
 import it.luca.chessgame.controller.Controller;
 import it.luca.chessgame.moves.Move;
 
 import javax.swing.*;
 
+/**
+ * Dialogo che mostra il registro delle mosse effettuate dai due giocatori
+ * fino a quel momento.
+ * 
+ * @author luca
+ */
 public class LogDialog extends JDialog {
 	public LogDialog(JFrame owner, Controller controller){
 		setTitle("Registro mosse");

@@ -9,7 +9,13 @@ import it.luca.chessgame.model.*;
 
 import javax.swing.*;
 
+/**
+ * Pannello contenente la scacchiera.
+ * 
+ * @author luca
+ */
 public class TilesPanel extends JPanel implements View, MouseListener {
+	private static final long serialVersionUID = 1L;
 	private final JFrame frame;
 	private final Model model;
 	private final JPanel[][] panels = new JPanel[8][8];
@@ -32,16 +38,24 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		return model;
 	}
 	
+	/**
+	 * Aggiunge i pezzi al pannello in base al modello e ne colora lo sfondo
+	 * a scacchiera.
+	 */
 	private void createPieces(){
 		setLayout(new GridLayout(8, 8));
 		setSize(600, 600);
 		
 		for(int y = 0; y < 8; y++)
 			for(int x = 0; x < 8; x++)
-				add(panels[x][y] = mkPiece(x, y, model.at(x, y), (x + y) % 2 == 0 ? Color.LIGHT_GRAY : Color.DARK_GRAY));
+				add(panels[x][y] = mkPiece(model.at(x, y), (x + y) % 2 == 0 ? Color.LIGHT_GRAY : Color.DARK_GRAY));
 	}
 	
-	private JPanel mkPiece(int x, int y, Pezzo p, Color c){
+	/**
+	 * Ritorna un pannello di colore c con l'icona del pezzo p.
+	 * 
+	 */
+	private JPanel mkPiece(Pezzo p, Color c){
 		JPanel panel = new JPanel();
 		panel.setBackground(c);
 		panel.add(new JLabel(p.getImage()));
@@ -68,9 +82,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 	
 	/**
 	 * Marca con un'icona le caselle raggiungibili dal pezzo alle coordinate 
-	 * (x, y) se questo può muovere.
-	 * @param x
-	 * @param y
+	 * (x, y), se questo può muovere.
 	 */
 	public void highlightReachableTiles(int x, int y){
 		ArrayList<Point> reachable = controller.getMover().reachableTilesFrom(x, y);

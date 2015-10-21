@@ -1,16 +1,19 @@
 package it.luca.chessgame.view;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Stack;
 
 import it.luca.chessgame.controller.*;
 import it.luca.chessgame.model.*;
-import it.luca.chessgame.moves.Move;
 
 import javax.swing.*;
 
+/**
+ * Frame contenente il gioco.
+ * 
+ * @author luca
+ */
 public class ChessFrame extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private final TilesModel model = new TilesModel(new ArrayConfiguration());
 	private final Controller controller;
 	private Dimension d;
@@ -50,6 +53,10 @@ public class ChessFrame extends JFrame {
 		setLocation((d.width - this.getSize().width)/2, (d.height - this.getSize().height)/2);
 	}
 	
+	/**
+	 * Aggiunge il pannello con la scacchiera al centro del frame
+	 * e lo ritorna.
+	 */
 	private View addTiles() {
 		TilesPanel panel = new TilesPanel(model, this);
 		
@@ -57,12 +64,16 @@ public class ChessFrame extends JFrame {
 		
 		return panel;
 	}
-	
+
+	/**
+	 * Aggiunge un menù in alto nel frame.
+	 */
 	private void addMenu(){
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBorder(null);
 		menuBar.setBackground(Color.GRAY);
 		
+		// 1° voce: Partita
 		JMenu gameMenu = new JMenu("Partita");
 		gameMenu.setBackground(Color.GRAY);
 		
@@ -80,6 +91,7 @@ public class ChessFrame extends JFrame {
 				System.exit(0);
 		});
 				
+		// 2° voce: Mosse
 		JMenu moveMenu = new JMenu("Mosse");
 		moveMenu.setBackground(Color.GRAY);
 		
@@ -93,7 +105,8 @@ public class ChessFrame extends JFrame {
 		
 		logItem.addActionListener(event -> controller.getView().showLog());
 		
-		JMenu aboutMenu = new JMenu("About");
+		// 3° voce: Scacchi
+		JMenu aboutMenu = new JMenu("Scacchi");
 		aboutMenu.setBackground(Color.GRAY);
 		JMenuItem infoItem = new JMenuItem("Info");
 		infoItem.addActionListener(event -> JOptionPane.showMessageDialog(ChessFrame.this, "Scacchi\nVersione 1.0\n@2015 Luca Pizzini", 
@@ -108,6 +121,10 @@ public class ChessFrame extends JFrame {
 		add(menuBar, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * Aggiunge due pannelli a sinistra e in basso della scacchiera
+	 * che rappresentano le coordinate delle caselle.
+	 */
 	private void addBorder(){
 		JPanel westBorder = new JPanel();
 		westBorder.setLayout(new GridLayout(8, 1));
