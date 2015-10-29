@@ -62,7 +62,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		
 		return panel;
 	}
-	
+
 	@Override
 	public void setController(Controller controller) {
 		this.controller = controller;
@@ -118,7 +118,8 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		// e mostro le caselle raggiungibili
 		if(count % 2 != 0){
 			if(!(model.at(x, y) instanceof CasellaVuota) && 
-					(controller.getMover().getTurno() ? model.at(x, y).getColor() == Color.WHITE : model.at(x, y).getColor() == Color.BLACK)){
+					(controller.getMover().getTurno() ? model.at(x, y).getColor() == Color.WHITE 
+					: model.at(x, y).getColor() == Color.BLACK)){
 				pieceX = x;
 				pieceY = y;
 				highlightReachableTiles(x, y);

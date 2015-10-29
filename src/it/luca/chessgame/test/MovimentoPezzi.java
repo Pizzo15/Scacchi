@@ -43,9 +43,11 @@ public class MovimentoPezzi {
 		
 		mover = new Mover(new TilesModel(c));
 		
-		// se il re è sotto scacco devo necessariamente muoverlo
+		// se il re è sotto scacco devo necessariamente muoverlo...
 		assertTrue(!mover.isMoveLegal(3, 3, 3, 2));
 		assertTrue(mover.isMoveLegal(4, 4, 4, 3));
+		
+		//... a meno che non posso mangiare il pezzo che tiene lo scacco
 	}
 	
 	@Test

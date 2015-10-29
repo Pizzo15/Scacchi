@@ -83,7 +83,7 @@ public class ChessFrame extends JFrame {
 		JMenuItem exitItem = new JMenuItem("Esci");
 		gameMenu.add(exitItem);
 		
-		newItem.addActionListener(event -> controller.getMover().newGame());
+		newItem.addActionListener(event -> controller.setNewGame());
 		
 		exitItem.addActionListener(event -> {
 			int selection = JOptionPane.showConfirmDialog(ChessFrame.this, "Uscire?", "", JOptionPane.YES_NO_OPTION);

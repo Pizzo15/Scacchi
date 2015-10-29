@@ -25,7 +25,12 @@ public class ChessController implements Controller {
 	}
 	
 	@Override
+	public void setNewGame(){
+		mover.newGame();
+	}
+	
+	@Override
 	public void onClick(int fromX, int fromY, int toX, int toY) {		
-			mover.move(fromX, fromY, toX, toY);
+		mover.move(fromX, fromY, toX, toY);
 	}
 }

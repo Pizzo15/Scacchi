@@ -86,11 +86,10 @@ public class Mover {
 	 */
 	public void newGame(){
 		int selection = JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), "Nuova partita?", "", 
-				JOptionPane.YES_NO_OPTION, 0,  new ImageIcon("img/newgameicon.png"));
+				JOptionPane.YES_NO_OPTION);
 		if(!scaccoMatto()){
 			if(selection == JOptionPane.YES_OPTION && !undos.isEmpty()) {
 				setNewGame();
-				simulateMouseClick();
 			}
 		} else {
 			if(selection == JOptionPane.YES_OPTION)
@@ -223,6 +222,71 @@ public class Mover {
 		
 		return res;
 	}
+
+	/**
+	 * Nel caso il re sia sotto scacco le mosse ammesse sono:
+	 * - il re scappa in una casella sicura sottraendosi allo scacco
+	 * - mangiare il pezzo che minaccia lo scacco se questo è unico
+	 */
+	private boolean checkMoveUnderScacco(int fromX, int fromY, int toX, int toY){
+		boolean canEscape = false, canBeEaten = false;
+		
+		if(kingCanEscape())
+			canEscape =  model.at(fromX, fromY) instanceof Re && isSafe(toX, toY);
+
+		canBeEaten = canReachCheckHolder(fromX, fromY) && isCheckHolder(toX, toY);
+		
+		return  canBeEaten || canEscape;
+	}
+	
+	private boolean canReachCheckHolder(int x, int y){
+		int kingX = getKingPosition().x;
+		int kingY = getKingPosition().y;
+		Point checkHolder = scacco(kingX, kingY).get(0);
+		
+		return checkColor(x, y, checkHolder.x, checkHolder.y) && checkTurn(x, y, checkHolder.x, checkHolder.y)
+				&& checkMove(x, y, checkHolder.x, checkHolder.y);
+	}
+	
+	private boolean isCheckHolder(int x, int y){
+		int kingX = getKingPosition().x;
+		int kingY = getKingPosition().y;
+		
+		for(Point p: scacco(kingX, kingY))
+			if(p.equals(new Point(x, y)))
+				return true;
+		
+		return false;
+	}
+	
+	private boolean kingCanEscape(){
+		ArrayList<Point> free = freeTilesAroundKing();
+
+		// controllo le caselle libere non sotto scacco
+		for(Point p: free)
+			// se almeno una di queste non è sotto la minaccia diretta di un pezzo avversario
+			// posso provare a scappare
+			if(scacco(p.x, p.y).isEmpty())
+				return true;
+		
+		return false;
+	}
+	
+	private boolean isSafe(int x, int y){
+		int kingX = getKingPosition().x;
+		int kingY = getKingPosition().y;
+		
+		// simulo la mossa del re nella casella libera non sotto scacco
+		model.setConfiguration(model.getConfiguration().swap(kingX, kingY, x, y));			
+		// se non è sotto scacco -> posso scappare
+		if(scacco(x, y).isEmpty()){
+			model.setConfiguration(model.getConfiguration().swap(x, y, kingX, kingY));		
+			return true;	
+		}
+		model.setConfiguration(model.getConfiguration().swap(x, y, kingX, kingY));	
+		
+		return false;
+	}
 	
 	/**
 	 * Controlla se la mossa (fromX, fromY) -> (toX, toY) è legale:
@@ -231,10 +295,15 @@ public class Mover {
 	 *  - le coordinate sono raggiungibili dal pezzo mosso
 	 */
 	private boolean moveLegal(int fromX, int fromY, int toX, int toY){
-		return checkColor(fromX, fromY, toX, toY) && checkTurn(fromX, fromY, toX, toY)
+		boolean legal = checkColor(fromX, fromY, toX, toY) && checkTurn(fromX, fromY, toX, toY)
 				&& checkMove(fromX, fromY, toX, toY);
+		
+		if(scacco(getKingPosition().x, getKingPosition().y).isEmpty())
+			return legal;
+		else
+			return legal && checkMoveUnderScacco(fromX, fromY, toX, toY);
 	}
-
+	
 	/**
 	 * Ritorna true se uno dei giocatori ha dato scacco matto all'
 	 * altro. In tal caso termina la partita.
@@ -244,14 +313,13 @@ public class Mover {
 		ArrayList<Point> notOnScacco = new ArrayList<Point>();
 		Point check;
 		
-		int tempX = getKingPosition().x;
-		int tempY = getKingPosition().y;
+		int kingX = getKingPosition().x;
+		int kingY = getKingPosition().y;
 		
-		// se non ci sono caselle libere attorno al 
-		// re ritorno false
-		if(free.isEmpty())
+		// se il re non è sotto scacco: false
+		if(scacco(kingX, kingY).isEmpty())
 			return false;
-
+		
 		// controllo le caselle libere non sotto scacco
 		for(Point p: free)
 			if(scacco(p.x, p.y).isEmpty())
@@ -265,32 +333,28 @@ public class Mover {
 				model.setConfiguration(model.getConfiguration().swap(getKingPosition().x, getKingPosition().y, p.x, p.y));			
 				// se non è sotto scacco -> non è scacco matto
 				if(scacco(p.x, p.y).isEmpty()){
-					model.setConfiguration(model.getConfiguration().swap(p.x, p.y, tempX, tempY));			
+					model.setConfiguration(model.getConfiguration().swap(p.x, p.y, kingX, kingY));		
 					return false;	
 				}
-				model.setConfiguration(model.getConfiguration().swap(p.x, p.y, tempX, tempY));
+				model.setConfiguration(model.getConfiguration().swap(p.x, p.y, kingX, kingY));
 			}
 		} else {
 			// tutte le caselle libere sono sotto scacco
-			// controllo se posso mangiare un pezzo che tiene
-			// sotto scacco una casella in maniera esclusiva
-			// e quindi liberare il re
-			for(Point p: free){
-				if(scacco(p.x, p.y).size() == 1){
+			// controllo se posso mangiare il pezzo che tiene
+			// sotto scacco il re -> se questo è unico non è scacco
+				if(scacco(kingX, kingY).size() == 1){
 					// salvo coordinate del pezzo che tiene in scacco
-					check = scacco(p.x, p.y).get(0);
+					check = scacco(kingX, kingY).get(0);
 					turno = !turno;
-					// se il pezzo che tiene lo scacco non è catturabile al prossimo turno
+					// se il pezzo che tiene lo scacco non è catturabile al prossimo turno -> scacco matto
 					if(scacco(check.x, check.y).isEmpty()){
-						// continuo il controllo
-						turno = !turno;
+						return true;
 					} else {
 						// altrimenti non è scacco matto: la partita continua
 						turno = !turno;
 						return false;
 					}
 				}
-			}
 		}
 		
 		return true;

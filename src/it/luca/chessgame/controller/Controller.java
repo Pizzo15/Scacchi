@@ -9,4 +9,6 @@ public interface Controller {
 	View getView();
 	
 	Mover getMover();
+
+	void setNewGame();
 }
