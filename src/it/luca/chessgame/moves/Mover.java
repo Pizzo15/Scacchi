@@ -232,7 +232,7 @@ public class Mover {
 		boolean canEscape = false, canBeEaten = false;
 		
 		if(kingCanEscape())
-			canEscape =  model.at(fromX, fromY) instanceof Re && isSafe(toX, toY);
+			canEscape =  model.at(fromX, fromY) instanceof Re && isSafe(fromX, fromY, toX, toY);
 
 		canBeEaten = canReachCheckHolder(fromX, fromY) && isCheckHolder(toX, toY);
 		
@@ -272,22 +272,21 @@ public class Mover {
 		return false;
 	}
 	
-	private boolean isSafe(int x, int y){
-		int kingX = getKingPosition().x;
-		int kingY = getKingPosition().y;
-		
-		// simulo la mossa del re nella casella libera non sotto scacco
-		model.setConfiguration(model.getConfiguration().swap(kingX, kingY, x, y));			
-		// se non è sotto scacco -> posso scappare
-		if(scacco(x, y).isEmpty()){
-			model.setConfiguration(model.getConfiguration().swap(x, y, kingX, kingY));		
+	private boolean isSafe(int fromX, int fromY, int toX, int toY){
+		Configuration save = model.getConfiguration();
+			
+		// simulo la mossa nella casella (toX, toY)
+		model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));			
+		// se non mette il re sotto scacco la mossa è valida
+		if(scacco(getKingPosition().x, getKingPosition().y).isEmpty()){
+			model.setConfiguration(save);	
 			return true;	
 		}
-		model.setConfiguration(model.getConfiguration().swap(x, y, kingX, kingY));	
+		model.setConfiguration(save);	
 		
 		return false;
 	}
-	
+
 	/**
 	 * Controlla se la mossa (fromX, fromY) -> (toX, toY) è legale:
 	 *  - i colori dei pezzi sono diversi
@@ -299,7 +298,7 @@ public class Mover {
 				&& checkMove(fromX, fromY, toX, toY);
 		
 		if(scacco(getKingPosition().x, getKingPosition().y).isEmpty())
-			return legal;
+			return legal && isSafe(fromX, fromY, toX, toY);
 		else
 			return legal && checkMoveUnderScacco(fromX, fromY, toX, toY);
 	}
@@ -498,7 +497,6 @@ public class Mover {
 			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
 			r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
 		} catch (AWTException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
