@@ -7,7 +7,5 @@ public interface View {
 	Model getModel();
 	void setController(Controller controller);
 	
-	void showLog();
-	
 	void onConfigurationChange();
 }

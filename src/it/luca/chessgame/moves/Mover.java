@@ -1,7 +1,6 @@
 package it.luca.chessgame.moves;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
 import java.util.*;
 
 import javax.swing.*;
@@ -12,8 +11,6 @@ public class Mover {
 	private final Model model;
 	private boolean turno;	// T = bianco, F = nero
 	private Stack<Configuration> undos = new Stack<Configuration>();
-	private Stack<Move> whiteLog = new Stack<Move>();
-	private Stack<Move> blackLog = new Stack<Move>();
 	
 	public Mover(Model model){
 		this.model = model;
@@ -32,8 +29,6 @@ public class Mover {
 		if(moveLegal(fromX, fromY, toX, toY)){
 			// salvo la configurazione corrente
 			undos.push(model.getConfiguration());
-			// aggiungo la mossa da effettuare al registro
-			addMoveToLog(fromX, fromY, toX, toY);
 			// aggiorno la configurazione scambiando le caselle
 			model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
 			// cambio il turno
@@ -53,32 +48,14 @@ public class Mover {
 		return moveLegal(fromX, fromY, toX, toY);
 	}
 
-	/**
-	 * Aggiunge la mossa al registro di uno dei due giocatori in 
-	 * base al turno specificando se si tratta di una cattura.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 */
-	private void addMoveToLog(int fromX, int fromY, int toX, int toY){
-		boolean eat = model.at(toX, toY) instanceof CasellaVuota ? false : true;
-		if(turno)
-			whiteLog.push(new Move(fromX, fromY, toX, toY, eat));
-		else
-			blackLog.push(new Move(fromX, fromY, toX, toY, eat));
+	public boolean getTurno(){
+		return turno;
 	}
 	
 	public void setTurno(boolean turno){
 		this.turno = turno;
 	}
-	
-	public boolean getTurno(){ return turno; }
-	
-	public Stack<Move> getWhiteLog(){ return whiteLog; }
-	
-	public Stack<Move> getBlackLog(){ return blackLog; }
-	
+
 	/**
 	 * Scacco matto: imposto una nuova partita nel caso di si, altrimenti esco.
 	 * Non scacco matto: nel caso di selezione negativa resto sulla partita attuale
@@ -106,8 +83,6 @@ public class Mover {
 	private void setNewGame(){
 		turno = true;
 		model.setConfiguration(new ArrayConfiguration());
-		blackLog.removeAllElements();
-		whiteLog.removeAllElements();
 	}
 	
 	/**
@@ -116,14 +91,8 @@ public class Mover {
 	 */
 	public void undo(){
 		if(!undos.isEmpty()){
-			int selection = JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), "Annullare l'ultima mossa?", "",
-					JOptionPane.YES_NO_OPTION, 0, new ImageIcon("img/logicon.png"));
-			if(selection == JOptionPane.YES_OPTION){
-				model.setConfiguration(undos.pop());
-				removeMoveFromLog();
-				simulateMouseClick();
-				turno = !turno;
-			}
+			model.setConfiguration(undos.pop());
+			turno = !turno;
 		}
 		else
 			JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Nessuna mossa da annullare", "Info", 
@@ -131,20 +100,9 @@ public class Mover {
 	}
 	
 	/**
-	 * Rimuove una mossa dal registro nel caso questa venga annullata.
-	 */
-	private void removeMoveFromLog() {
-		if(!turno)
-			whiteLog.pop();
-		else
-			blackLog.pop();
-	}
-	
-	/**
 	 * Controlla che la casella di arrivo non sia occupata da un pezzo dello stesso
 	 * colore di quello selezionato.
 	 * In tal caso blocca la mossa ritornando false.
-	 * @return
 	 */
 	private boolean checkColor(int fromX, int fromY, int toX, int toY){
 		return model.at(fromX, fromY).getColor() != model.at(toX, toY).getColor();
@@ -152,11 +110,6 @@ public class Mover {
 	
 	/** 
 	 * Controlla che l'alternanza dei turni sia rispettata.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 * @return
 	 */
 	private boolean checkTurn(int fromX, int fromY, int toX, int toY){
 		if(turno){
@@ -170,7 +123,10 @@ public class Mover {
 		return false;
 	}
 	
-	
+	/**
+	 * Controlla che la mossa sia valida in base alle regole di movimento
+	 * del gioco.
+	 */
 	private boolean checkMove(int fromX, int fromY, int toX, int toY){
 		if(model.at(fromX, fromY) instanceof Pedone) {
 			if(model.at(fromX, fromY).getColor() == Color.BLACK && toY - fromY == 1) {
@@ -239,6 +195,9 @@ public class Mover {
 		return  canBeEaten || canEscape;
 	}
 	
+	/**
+	 * Controlla se il pezzo di coordinate (x, y) può mangiare il pe
+	 */
 	private boolean canReachCheckHolder(int x, int y){
 		int kingX = getKingPosition().x;
 		int kingY = getKingPosition().y;
@@ -247,7 +206,11 @@ public class Mover {
 		return checkColor(x, y, checkHolder.x, checkHolder.y) && checkTurn(x, y, checkHolder.x, checkHolder.y)
 				&& checkMove(x, y, checkHolder.x, checkHolder.y);
 	}
-	
+
+	/**
+	 * Ritorna true se il pezzo (x, y) è quello che tiene sotto scacco
+	 * il re.
+	 */
 	private boolean isCheckHolder(int x, int y){
 		int kingX = getKingPosition().x;
 		int kingY = getKingPosition().y;
@@ -258,7 +221,11 @@ public class Mover {
 		
 		return false;
 	}
-	
+
+	/**
+	 * Il re è sotto scacco: ritorna true se c'è almeno una casella libera in 
+	 * cui tentare di sottrarsi allo scacco.
+	 */
 	private boolean kingCanEscape(){
 		ArrayList<Point> free = freeTilesAroundKing();
 
@@ -272,6 +239,9 @@ public class Mover {
 		return false;
 	}
 	
+	/**
+	 * Simula la mossa e verifica se questa mette il re in una situazione di scacco.
+	 */
 	private boolean isSafe(int fromX, int fromY, int toX, int toY){
 		Configuration save = model.getConfiguration();
 			
@@ -301,6 +271,10 @@ public class Mover {
 			return legal && isSafe(fromX, fromY, toX, toY);
 		else
 			return legal && checkMoveUnderScacco(fromX, fromY, toX, toY);
+	}
+	
+	public boolean kingUnderScacco(){
+		return !scacco(getKingPosition().x, getKingPosition().y).isEmpty();
 	}
 	
 	/**
@@ -486,18 +460,5 @@ public class Mover {
 			freeTiles.add(new Point(x + 1, y));
 		
 		return freeTiles;
-	}
-
-	/**
-	 * Simula un evento mouseClicked.
-	 */
-	private void simulateMouseClick(){
-		try {
-			Robot r = new Robot();
-			r.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-			r.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-		} catch (AWTException e1) {
-			e1.printStackTrace();
-		}
 	}
 }

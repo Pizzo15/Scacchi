@@ -27,7 +27,9 @@ public class MovimentoPezzi {
 		mover = new Mover(new TilesModel(c));
 		
 		// mi sposto di una casella in una qualsiasi direzione
-		assertTrue(mover.isMoveLegal(4, 4, 4, 5));
+		assertTrue(mover.isMoveLegal(4, 4, 5, 4));
+		assertTrue(mover.isMoveLegal(4, 4, 5, 5));
+		assertTrue(mover.isMoveLegal(4, 4, 3, 4));
 		
 		// non posso muovermi di due caselle
 		assertTrue(!mover.isMoveLegal(4, 4, 4, 6));
@@ -43,11 +45,17 @@ public class MovimentoPezzi {
 		
 		mover = new Mover(new TilesModel(c));
 		
-		// se il re è sotto scacco devo necessariamente muoverlo...
+		// se il re è sotto scacco devo necessariamente muoverlo in una
+		// posizione sicura...
 		assertTrue(!mover.isMoveLegal(3, 3, 3, 2));
 		assertTrue(mover.isMoveLegal(4, 4, 4, 3));
 		
 		//... a meno che non posso mangiare il pezzo che tiene lo scacco
+		c.set(5, 3, new Alfiere(white));
+		
+		mover = new Mover(new TilesModel(c));
+		
+		assertTrue(mover.isMoveLegal(5, 3, 6, 4));
 	}
 	
 	@Test

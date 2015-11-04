@@ -17,6 +17,7 @@ public class ChessFrame extends JFrame {
 	private final TilesModel model = new TilesModel(new ArrayConfiguration());
 	private final Controller controller;
 	private Dimension d;
+	private LogPanel logPanel;
 	
 	public ChessFrame(){
 		setTitle("ChessGame");
@@ -29,12 +30,13 @@ public class ChessFrame extends JFrame {
 
 		addBorder();
 		addMenu();
+		addLog();
 		
 		pack();
-		
+
 		setLocation((d.width - this.getSize().width)/2, (d.height - this.getSize().height)/2);
 	}
-	
+
 	public ChessFrame(TilesPanel panel){
 		setTitle("ChessGame");
 		setResizable(false);
@@ -61,7 +63,7 @@ public class ChessFrame extends JFrame {
 		TilesPanel panel = new TilesPanel(model, this);
 		
 		add(panel, BorderLayout.CENTER);
-		
+
 		return panel;
 	}
 
@@ -69,54 +71,7 @@ public class ChessFrame extends JFrame {
 	 * Aggiunge un menù in alto nel frame.
 	 */
 	private void addMenu(){
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBorder(null);
-		menuBar.setBackground(Color.GRAY);
-		
-		// 1° voce: Partita
-		JMenu gameMenu = new JMenu("Partita");
-		gameMenu.setBackground(Color.GRAY);
-		
-		JMenuItem newItem = new JMenuItem("Nuova Partita");
-		gameMenu.add(newItem);
-		
-		JMenuItem exitItem = new JMenuItem("Esci");
-		gameMenu.add(exitItem);
-		
-		newItem.addActionListener(event -> controller.setNewGame());
-		
-		exitItem.addActionListener(event -> {
-			int selection = JOptionPane.showConfirmDialog(ChessFrame.this, "Uscire?", "", JOptionPane.YES_NO_OPTION);
-			if(selection == JOptionPane.OK_OPTION)
-				System.exit(0);
-		});
-				
-		// 2° voce: Mosse
-		JMenu moveMenu = new JMenu("Mosse");
-		moveMenu.setBackground(Color.GRAY);
-		
-		JMenuItem undoItem = new JMenuItem("Annulla mossa");
-		moveMenu.add(undoItem);
-		
-		undoItem.addActionListener(event -> controller.getMover().undo());
-				
-		JMenuItem logItem = new JMenuItem("Registro");
-		moveMenu.add(logItem);
-		
-		logItem.addActionListener(event -> controller.getView().showLog());
-		
-		// 3° voce: Scacchi
-		JMenu aboutMenu = new JMenu("Scacchi");
-		aboutMenu.setBackground(Color.GRAY);
-		JMenuItem infoItem = new JMenuItem("Info");
-		infoItem.addActionListener(event -> JOptionPane.showMessageDialog(ChessFrame.this, "Scacchi\nVersione 1.0\n@2015 Luca Pizzini", 
-						"", 0, new ImageIcon("img/infoicon.png")));
-		
-		aboutMenu.add(infoItem);
-		
-		menuBar.add(gameMenu);
-		menuBar.add(moveMenu);
-		menuBar.add(aboutMenu);
+		MenuBar menuBar = new MenuBar(this, controller.getMover());
 		
 		add(menuBar, BorderLayout.NORTH);
 	}
@@ -156,4 +111,14 @@ public class ChessFrame extends JFrame {
 
 		add(southBorder, BorderLayout.SOUTH);
 	}	
+	
+	public LogPanel getLog(){
+		return logPanel;
+	}
+	
+	private void addLog(){
+		logPanel = new LogPanel(this, controller.getMover());
+		
+		add(logPanel, BorderLayout.EAST);
+	}
 }

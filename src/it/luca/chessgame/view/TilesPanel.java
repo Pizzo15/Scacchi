@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import it.luca.chessgame.controller.Controller;
 import it.luca.chessgame.model.*;
+import it.luca.chessgame.moves.Move;
 
 import javax.swing.*;
 
@@ -16,17 +17,17 @@ import javax.swing.*;
  */
 public class TilesPanel extends JPanel implements View, MouseListener {
 	private static final long serialVersionUID = 1L;
-	private final JFrame frame;
+	private final ChessFrame frame;
 	private final Model model;
 	private final JPanel[][] panels = new JPanel[8][8];
 	private Controller controller;
 	private static int count = 1;
 	private static int pieceX, pieceY;
 	
-	public TilesPanel(Model model, JFrame frame){
+	public TilesPanel(Model model, ChessFrame frame){
 		this.model = model;
 		this.frame = frame;
-	
+
 		createPieces();
 		
 		model.setView(this);
@@ -107,6 +108,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// lato di una casella della scacchiera
+		LogPanel log = frame.getLog();
 		int dim = this.getSize().width / 8;
 		
 		// ottengo le coordinate della casella cliccata
@@ -129,6 +131,11 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 			// 2° click: se la casella cliccata è tra le raggiungibili muovo
 			cleanReachableTiles();
 			count++;
+			
+			if(controller.getMover().isMoveLegal(pieceX, pieceY, x, y))
+				log.insert(new Move(pieceX, pieceY, x, y, !(model.at(x, y) instanceof CasellaVuota)).toString(), 
+						model.at(pieceX, pieceY).getColor() == Color.WHITE);
+			
 			controller.onClick(pieceX, pieceY, x, y);
 			// controllo se ho dato scacco matto
 			if(controller.getMover().scaccoMatto()){
@@ -154,9 +161,4 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) { }
-
-	@Override
-	public void showLog(){
-		new LogDialog(frame, controller).setVisible(true);
-	}
 }

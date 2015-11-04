@@ -26,7 +26,7 @@ public class Move {
 	 */
 	public String toString(){
 		return (char) (fromX + 'a') + "" + invertiOrdinate(fromY) + (eat ? " x " : " - ") + (char) (toX + 'a') + 
-				invertiOrdinate(toY) + "\n";
+				invertiOrdinate(toY);
 	}
 	
 	/**
