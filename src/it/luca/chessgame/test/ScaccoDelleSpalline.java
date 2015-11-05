@@ -34,19 +34,15 @@ public class ScaccoDelleSpalline{
 		c.set(0, 1, new Pedone(black));
 		c.set(1, 1, new Pedone(black));
 		c.set(3, 0, new Regina(black));
-		c.set(6, 0, new Re(black));
+		c.set(7, 1, new Re(black));
 		c.set(7, 2, new Pedone(black));
 		c.set(7, 0, new Torre(black));
-		c.set(6, 1, new Pedone(black));
 			
-		c.set(5, 2, new Torre(white));
-		c.set(6, 4, new Regina(white));
+		c.set(7, 2, new Torre(white));
+		c.set(5, 1, new Regina(white));
 		c.set(6, 6, new Pedone(white));
 		c.set(6, 7, new Re(white));
 		c.set(7, 5, new Pedone(white));
-		
-		new Simulate(c, c = c.swap(6, 4, 4, 2), c = c.swap(6, 0, 7, 1),
-				c = c.swap(5, 2, 7, 2));
 			
 		mover = new Mover(new TilesModel(c));
 		mover.setTurno(false);

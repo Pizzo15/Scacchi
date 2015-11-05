@@ -97,12 +97,23 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 	}
 	
 	/**
-	 * Elimina i bordi aggiunti dal metodo sopra.
+	 * Elimina i bordi aggiunti.
 	 */
 	private void cleanReachableTiles(){
 		for(int x = 0; x < 8; x++)
 			for(int y = 0; y < 8; y++)
 				panels[x][y].setBorder(null);
+	}
+	
+	/**
+	 * Evidenzia i pezzi che possono effettuare una mossa nel caso che il giocatore
+	 * prema una casella a vuoto.
+	 */
+	private void highlightMovablePieces(Color player){
+		for(int x = 0; x < 8; x++)
+			for(int y = 0; y < 8; y++)
+				if(model.at(x, y).getColor() == player && !controller.getMover().reachableTilesFrom(x, y).isEmpty())
+					panels[x][y].setBorder(BorderFactory.createLineBorder(Color.GREEN));
 	}
 	
 	@Override
@@ -126,17 +137,21 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 				pieceY = y;
 				highlightReachableTiles(x, y);
 				count++;
+			} else {
+				highlightMovablePieces(controller.getMover().getTurno() ? Color.white : Color.BLACK);
 			}
 		} else {
 			// 2° click: se la casella cliccata è tra le raggiungibili muovo
 			cleanReachableTiles();
 			count++;
 			
+			// se la mossa è legale la aggiungo al registro
 			if(controller.getMover().isMoveLegal(pieceX, pieceY, x, y))
 				log.insert(new Move(pieceX, pieceY, x, y, !(model.at(x, y) instanceof CasellaVuota)).toString(), 
 						model.at(pieceX, pieceY).getColor() == Color.WHITE);
 			
 			controller.onClick(pieceX, pieceY, x, y);
+			
 			// controllo se ho dato scacco matto
 			if(controller.getMover().scaccoMatto()){
 				JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Scacco Matto!", 

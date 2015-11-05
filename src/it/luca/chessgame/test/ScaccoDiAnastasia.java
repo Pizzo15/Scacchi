@@ -40,18 +40,14 @@ public class ScaccoDiAnastasia {
 		c.set(7, 5, new Alfiere(black));
 
 		c.set(0, 4, new Pedone(white));
-		c.set(2, 3, new Regina(white));
-		c.set(2, 7, new Torre(white));
-		c.set(4, 1, new Cavallo(white));
+		c.set(2, 0, new Torre(white));
+		c.set(5, 3, new Cavallo(white));
 		c.set(4, 4, new Pedone(white));
 		c.set(5, 6, new Pedone(white));
 		c.set(6, 5, new Pedone(white));
 		c.set(7, 6, new Re(white));
 		c.set(6, 7, new Pedone(white));
-
-		new Simulate(c, c = c.swap(4, 1, 5, 3), c = c.swap(5, 0, 6, 0),
-				c = c.swap(2, 3, 5, 0), c = c.swap(6, 0, 5, 0), c = c.swap(2, 7, 2, 0));
-		
+	
 		mover = new Mover(new TilesModel(c));
 		mover.setTurno(false);
 		

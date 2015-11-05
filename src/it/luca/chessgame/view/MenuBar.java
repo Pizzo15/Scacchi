@@ -14,7 +14,6 @@ public class MenuBar extends JMenuBar {
 
 	public MenuBar(ChessFrame owner, Mover mover){
 		setBorder(null);
-		setBackground(Color.GRAY);
 		
 		// 1° voce: Partita
 		JMenu gameMenu = new JMenu("Partita");

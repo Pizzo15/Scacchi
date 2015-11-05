@@ -42,12 +42,10 @@ public class ScaccoDelCorridoio {
 		// aggiungo i pezzi neri
 		c.set(2, 1, new Torre(black));
 		c.set(5, 3, new Pedone(black));
-		c.set(4, 1, new Regina(black));
+		c.set(4, 7, new Regina(black));
 		c.set(6, 2, new Pedone(black));
 		c.set(7, 1, new Re(black));
 		c.set(7, 2, new Pedone(black));
-		
-		new Simulate(c, c = c.swap(4, 1, 4, 7));
 		
 		mover = new Mover(new TilesModel(c));
 			
