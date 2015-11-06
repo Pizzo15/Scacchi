@@ -51,6 +51,8 @@ public class ScaccoDiAnastasia {
 		mover = new Mover(new TilesModel(c));
 		mover.setTurno(false);
 		
+		new Simulation(c, "Un cavallo controlla le due case di fuga del re attaccato dalla torre");
+
 		assertTrue(mover.scaccoMatto());
 	}
 }

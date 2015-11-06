@@ -46,7 +46,9 @@ public class ScaccoDelleSpalline{
 			
 		mover = new Mover(new TilesModel(c));
 		mover.setTurno(false);
-			
+		
+		new Simulation(c, "Il re è autobloccato e la donna dà scacco");
+
 		// scacco matto
 		assertTrue(mover.scaccoMatto());
 	}

@@ -12,8 +12,6 @@ import org.junit.Test;
 /**
  * Classe di test per la combinazione di matto di Greco:
  * la torre si unisce all'alfiere che inibisce una casa di fuga.
- * 
- * @author luca
  */
 public class ScaccoDiGreco {
 	private Configuration c = new ArrayConfiguration();
@@ -55,6 +53,8 @@ public class ScaccoDiGreco {
 		mover = new Mover(new TilesModel(c));
 		mover.setTurno(false);
 		
+		new Simulation(c, "La torre si unisce all'alfiere che inibisce una casa di fuga");
+
 		assertTrue(mover.scaccoMatto());
 	}
 }

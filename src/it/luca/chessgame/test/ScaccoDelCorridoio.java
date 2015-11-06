@@ -49,6 +49,8 @@ public class ScaccoDelCorridoio {
 		
 		mover = new Mover(new TilesModel(c));
 			
+		new Simulation(c, "La donna dà scacco matto al re bloccato dai pedoni");
+		
 		// scacco matto
 		assertTrue(mover.scaccoMatto());
 	}
