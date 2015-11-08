@@ -155,7 +155,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 			// controllo se ho dato scacco matto
 			if(controller.getMover().scaccoMatto()){
 				JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Scacco Matto!", 
-						(controller.getMover().getTurno() ? "Bianco" : "Nero") + " vince!", 0, new ImageIcon("img/winicon.png"));
+						(!controller.getMover().getTurno() ? "Bianco" : "Nero") + " vince!", 0, new ImageIcon("img/winicon.png"));
 				controller.getMover().newGame();
 			}
 		}

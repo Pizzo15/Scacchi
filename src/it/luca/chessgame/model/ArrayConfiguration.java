@@ -15,7 +15,7 @@ public class ArrayConfiguration extends AbstractConfiguration {
 	
 	public ArrayConfiguration(){
 		tiles = new Pezzo[8][8];
-		
+	
 		configurazioneIniziale();
 	}
 

@@ -22,13 +22,12 @@ import it.luca.chessgame.view.TilesPanel;
 public class Simulation {
 	private TilesPanel panel;
 	private JFrame frame = new JFrame("Simulazione");
-	private Dimension d;
-	private static boolean buttonPressed = false;
+	private final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+	private boolean buttonPressed = false;
 	
 	public Simulation(Configuration c, String description){
 		panel = new TilesPanel(new TilesModel(c), new ChessFrame());
-		d = Toolkit.getDefaultToolkit().getScreenSize();
-				
+			
 		frame.add(panel, BorderLayout.CENTER);
 		
 		JButton okButton = new JButton("Ok");
@@ -38,7 +37,9 @@ public class Simulation {
 		
 		JPanel textPanel = new JPanel();
 		textPanel.setBackground(Color.GRAY);
-		textPanel.add(new JLabel(description));
+		
+		JLabel label = new JLabel(description);
+		textPanel.add(label);
 		
 		frame.add(textPanel, BorderLayout.SOUTH);
 		
@@ -47,10 +48,10 @@ public class Simulation {
 		frame.setLocation((d.width - frame.getSize().width)/2, (d.height - frame.getSize().height)/2);
 		
 		frame.setVisible(true);
-		
+			
 		while(buttonPressed == false)
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e) { }
-	}
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) { }
+		}
 }

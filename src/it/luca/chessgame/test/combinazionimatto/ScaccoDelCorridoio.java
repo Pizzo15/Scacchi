@@ -1,4 +1,4 @@
-package it.luca.chessgame.test;
+package it.luca.chessgame.test.combinazionimatto;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,7 @@ import java.awt.Color;
 
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
+import it.luca.chessgame.test.Simulation;
 
 import org.junit.Test;
 
@@ -20,7 +21,6 @@ public class ScaccoDelCorridoio {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDelCorridoio(){
@@ -42,16 +42,16 @@ public class ScaccoDelCorridoio {
 		// aggiungo i pezzi neri
 		c.set(2, 1, new Torre(black));
 		c.set(5, 3, new Pedone(black));
-		c.set(4, 7, new Regina(black));
+		c.set(4, 1, new Regina(black));
 		c.set(6, 2, new Pedone(black));
 		c.set(7, 1, new Re(black));
 		c.set(7, 2, new Pedone(black));
-		
-		mover = new Mover(new TilesModel(c));
 			
-		new Simulation(c, "La donna dà scacco matto al re bloccato dai pedoni");
+		new Simulation(c, "Scacco del corridoio");
+		
+		new Simulation(c = c.swap(4, 1, 4, 7), "La donna dà matto al re bloccato dai pedoni");
 		
 		// scacco matto
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c)).scaccoMatto());
 	}
 }

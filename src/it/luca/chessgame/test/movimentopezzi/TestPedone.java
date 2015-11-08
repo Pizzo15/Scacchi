@@ -1,4 +1,4 @@
-package it.luca.chessgame.test;
+package it.luca.chessgame.test.movimentopezzi;
 
 import static org.junit.Assert.assertTrue;
 import it.luca.chessgame.model.Alfiere;
