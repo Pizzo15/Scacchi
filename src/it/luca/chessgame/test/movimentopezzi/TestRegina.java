@@ -4,13 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 
-import it.luca.chessgame.model.ArrayConfiguration;
-import it.luca.chessgame.model.CasellaVuota;
-import it.luca.chessgame.model.Configuration;
-import it.luca.chessgame.model.Pedone;
-import it.luca.chessgame.model.Re;
-import it.luca.chessgame.model.Regina;
-import it.luca.chessgame.model.TilesModel;
+import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
 
 import org.junit.Test;

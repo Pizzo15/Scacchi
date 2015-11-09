@@ -5,8 +5,6 @@ package it.luca.chessgame.moves;
  * coordinate di partenza e di arrivo delle caselle
  * e a un valore boolean che indica se si tratta
  * di una cattura.
- * 
- * @author luca
  */
 public class Move {
 	private int fromX, toX;

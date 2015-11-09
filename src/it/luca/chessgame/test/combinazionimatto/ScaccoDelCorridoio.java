@@ -46,7 +46,7 @@ public class ScaccoDelCorridoio {
 		c.set(7, 2, new Pedone(black));
 			
 		new Simulation(c, "Scacco del corridoio");
-		
+
 		new Simulation(c = c.swap(4, 1, 4, 7), "La donna dà matto al re bloccato dai pedoni");
 		
 		// scacco matto

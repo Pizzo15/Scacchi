@@ -20,10 +20,6 @@ public class Mover {
 	/**
 	 * Esegue la mossa (fromX, fromY) -> (toX, toY)
 	 * se questa è lecita.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
 	 */
 	public void move(int fromX, int fromY, int toX, int toY){
 		if(moveLegal(fromX, fromY, toX, toY)){
@@ -37,12 +33,7 @@ public class Mover {
 	}
 	
 	/**
-	 * Ritorna la legalità o meno della mossa effettuata.
-	 * @param fromX
-	 * @param fromY
-	 * @param toX
-	 * @param toY
-	 * @return
+	 * Ritorna la legalità o meno della mossa (fromX, fromY) -> (toX, toY).
 	 */
 	public boolean isMoveLegal(int fromX, int fromY, int toX, int toY){
 		return moveLegal(fromX, fromY, toX, toY);
@@ -123,28 +114,38 @@ public class Mover {
 	 */
 	private boolean checkMove(int fromX, int fromY, int toX, int toY){
 		if(model.at(fromX, fromY) instanceof Pedone) {
+			// Pedone nero: muove di una casella in basso
 			if(model.at(fromX, fromY).getColor() == Color.BLACK && toY - fromY == 1) {
 				if(fromX - toX == 0 && model.at(toX, toY) instanceof CasellaVuota)
 					return true;
+				// può mangiare un pezzo nelle caselle diagonali sottostanti adiacenti
 				else if(!(model.at(toX, toY) instanceof CasellaVuota) && Math.abs(toX - fromX) == 1)
 					return true;
 			}
 			else if (model.at(fromX, fromY).getColor() == Color.WHITE && fromY - toY == 1) {
+				// Pedone bianco: muove di una casella in alto
 				if(model.at(toX, toY) instanceof CasellaVuota && fromX - toX == 0)
 					return true;
+				// può mangiare un pezzo nelle caselle diagonali soprastanti adiacenti
 				else if(!(model.at(toX, toY) instanceof CasellaVuota) && Math.abs(toX - fromX) == 1)
 					return true;
 			}
+			// Cavallo
 		} else if(model.at(fromX, fromY) instanceof Cavallo) {
+			// si muove a L e può saltare gli avversari
 			return (Math.abs(toX-fromX) == 2 && Math.abs(toY-fromY) == 1) || 
 					(Math.abs(toX-fromX) == 1 && Math.abs(toY-fromY) == 2);
 		} else if(model.at(fromX, fromY) instanceof Re) {
-			return Math.abs(toX - fromX) < 2 && Math.abs(toY - fromY) < 2;		
+			// Re: si muove di una casella in ogni direzione
+			return Math.abs(toX - fromX) < 2 && Math.abs(toY - fromY) < 2;	
 		} else if(model.at(fromX, fromY) instanceof Torre) {
+			// Torre: si muove nelle posizioni ortogonali e non può saltare pezzi
 			return (Math.abs(toY-fromY) == 0 || Math.abs(toX-fromX) == 0) && checkRookJump(fromX, fromY, toX, toY);		
 		} else if(model.at(fromX, fromY) instanceof Alfiere) {
+			// Alfiere: si muove in diagonale e non può saltare pezzi
 			return Math.abs(fromX-toX) == Math.abs(fromY-toY) && checkBishopJump(fromX, fromY, toX, toY);
 		} else if(model.at(fromX, fromY) instanceof Regina) {
+			// Regina: unisce le caratteristiche di Torre e Alfiere
 			return (checkRookJump(fromX, fromY, toX, toY) && (Math.abs(toY-fromY) == 0 || Math.abs(toX-fromX) == 0)) ||
 					(Math.abs(fromX-toX) == Math.abs(fromY-toY) && checkBishopJump(fromX, fromY, toX, toY));
 		}
@@ -154,7 +155,6 @@ public class Mover {
 	/**
 	 * Ritorna le coordinate dei pezzi che tengono sotto scacco 
 	 * una casella.
-	 * @return
 	 */
 	private ArrayList<Point> scacco(int kingX, int kingY){
 		Color oppColor = turno ? Color.BLACK : Color.WHITE;
@@ -257,20 +257,26 @@ public class Mover {
 
 	/**
 	 * Controlla se la mossa (fromX, fromY) -> (toX, toY) è legale:
+	 *  se il re non è sotto scacco e:
 	 *  - i colori dei pezzi sono diversi
 	 *  - il turno è coerente col pezzo da muovere
 	 *  - le coordinate sono raggiungibili dal pezzo mosso
+	 *  - la mossa non mette il re sotto la minaccia dei pezzi avversari
+	 *  altrimenti il re deve necessariamente sottrarsi allo scacco.
 	 */
 	private boolean moveLegal(int fromX, int fromY, int toX, int toY){
 		boolean legal = checkColor(fromX, fromY, toX, toY) && checkTurn(fromX, fromY, toX, toY)
 				&& checkMove(fromX, fromY, toX, toY);
 		
-		if(scacco(getKingPosition().x, getKingPosition().y).isEmpty())
+		if(!kingUnderScacco())
 			return legal && isSafe(fromX, fromY, toX, toY);
 		else
 			return legal && checkMoveUnderScacco(fromX, fromY, toX, toY);
 	}
 	
+	/*
+	 * Controlla se il re è sotto scacco.
+	 */
 	public boolean kingUnderScacco(){
 		return !scacco(getKingPosition().x, getKingPosition().y).isEmpty();
 	}

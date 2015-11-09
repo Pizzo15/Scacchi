@@ -12,8 +12,6 @@ import javax.swing.*;
 
 /**
  * Pannello contenente la scacchiera.
- * 
- * @author luca
  */
 public class TilesPanel extends JPanel implements View, MouseListener {
 	private static final long serialVersionUID = 1L;
@@ -121,6 +119,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		// lato di una casella della scacchiera
 		LogPanel log = frame.getLog();
 		int dim = this.getSize().width / 8;
+		boolean help = ((MenuBar) frame.getContentPane().getComponent(3)).getHelp();
 		
 		// ottengo le coordinate della casella cliccata
 		int x = e.getX() / dim;
@@ -135,10 +134,14 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 					: model.at(x, y).getColor() == Color.BLACK)){
 				pieceX = x;
 				pieceY = y;
-				highlightReachableTiles(x, y);
+				
+				if(help)
+					highlightReachableTiles(x, y);
+				
 				count++;
 			} else {
-				highlightMovablePieces(controller.getMover().getTurno() ? Color.white : Color.BLACK);
+				if(help)
+					highlightMovablePieces(controller.getMover().getTurno() ? Color.WHITE : Color.BLACK);
 			}
 		} else {
 			// 2° click: se la casella cliccata è tra le raggiungibili muovo
@@ -155,7 +158,7 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 			// controllo se ho dato scacco matto
 			if(controller.getMover().scaccoMatto()){
 				JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Scacco Matto!", 
-						(!controller.getMover().getTurno() ? "Bianco" : "Nero") + " vince!", 0, new ImageIcon("img/winicon.png"));
+						(!controller.getMover().getTurno() ? "Bianco" : "Nero") + " vince!", 0);
 				controller.getMover().newGame();
 			}
 		}

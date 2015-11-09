@@ -38,15 +38,15 @@ public class ScaccoMattoInTreMosse4 {
 		
 		new Simulation(c, "Scacco matto in tre mosse (4)");
 		
-		new Simulation(c = c.swap(2, 5, 2, 3), "");
+		new Simulation(c = c.swap(2, 5, 2, 3), "La regina minaccia il re");
 		
-		new Simulation(c = c.swap(1, 2, 2, 3), "");
+		new Simulation(c = c.swap(1, 2, 2, 3), "Il pedone para la minaccia mangiando la regina");
 		
-		new Simulation(c = c.swap(1, 4, 2, 3), "");
+		new Simulation(c = c.swap(1, 4, 2, 3), "Il pedone mangia l'avversario e mette il re sotto scacco");
 		
-		new Simulation(c = c.swap(3, 2, 3, 3), "");
+		new Simulation(c = c.swap(3, 2, 3, 3), "Il re muove in posizione sicura");
 		
-		new Simulation(c = c.swap(6, 1, 3, 1), "");
+		new Simulation(c = c.swap(6, 1, 3, 1), "La torre dà matto");
 		
 		// scacco matto
 		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());

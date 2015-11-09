@@ -4,10 +4,7 @@ import java.awt.BorderLayout;
 
 import it.luca.chessgame.moves.Mover;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
 public class LogPanel extends JPanel{
@@ -35,6 +32,9 @@ public class LogPanel extends JPanel{
 		add(scrollPane, BorderLayout.EAST);
 	}
 	
+	/**
+	 * Inserisce move nell'area di testo di player.
+	 */
 	public void insert(String move, boolean player){
 		if(player)
 			whiteArea.append("\n" + count + ": " + move);
@@ -44,6 +44,9 @@ public class LogPanel extends JPanel{
 		}
 	}
 	
+	/**
+	 * Rimuove l'ultima mossa inserita nell'area di testo di player.
+	 */
 	public void undo(boolean player) throws BadLocationException{
 		if(player)
 			removeLastLine(whiteArea);
@@ -53,12 +56,18 @@ public class LogPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Rimuove l'ultima riga di testo da area.
+	 */
 	private void removeLastLine(JTextArea area) throws BadLocationException{
 		String content = area.getDocument().getText(0, area.getDocument().getLength());
 		int lastLineBreak = content.lastIndexOf('\n');
 		area.getDocument().remove(lastLineBreak, area.getDocument().getLength() - lastLineBreak);
 	}
-	
+
+	/**
+	 * Ripristina la situazione iniziale delle aree di testo.
+	 */
 	public void clean(){
 		whiteArea.setText(whiteTitle);
 		blackArea.setText(blackTitle);

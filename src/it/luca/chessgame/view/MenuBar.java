@@ -2,23 +2,18 @@ package it.luca.chessgame.view;
 
 import it.luca.chessgame.moves.Mover;
 
-import java.awt.Color;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 public class MenuBar extends JMenuBar {
 	private static final long serialVersionUID = 1L;
-
+	private static boolean help = false;
+	
 	public MenuBar(ChessFrame owner, Mover mover){
 		setBorder(null);
 		
 		// 1° voce: Partita
 		JMenu gameMenu = new JMenu("Partita");
-		gameMenu.setBackground(Color.GRAY);
-		
+
 		JMenuItem newItem = new JMenuItem("Nuova Partita");
 		gameMenu.add(newItem);
 		
@@ -42,7 +37,6 @@ public class MenuBar extends JMenuBar {
 				
 		// 2° voce: Mosse
 		JMenu moveMenu = new JMenu("Mosse");
-		moveMenu.setBackground(Color.GRAY);
 		
 		JMenuItem undoItem = new JMenuItem("Annulla mossa");
 		moveMenu.add(undoItem);
@@ -58,7 +52,26 @@ public class MenuBar extends JMenuBar {
 			owner.repaint();
 		});
 		
+		moveMenu.addSeparator();
+		
+		JMenu helpMenu = new JMenu("Aiuto");
+		moveMenu.add(helpMenu);
+		
+		// Se attivati evidenziano le caselle raggiungibili dal pezzo selezionato e i pezzi
+		// movibili
+		JCheckBoxMenuItem showReachable = new JCheckBoxMenuItem("Suggerimenti");
+		helpMenu.add(showReachable);
+		
+		showReachable.addActionListener(event ->
+		{
+			help = showReachable.isSelected();
+		});
+		
 		add(gameMenu);
 		add(moveMenu);
+	}
+	
+	public boolean getHelp(){
+		return help;
 	}
 }

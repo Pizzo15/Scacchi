@@ -9,8 +9,6 @@ import javax.swing.*;
 
 /**
  * Frame contenente il gioco.
- * 
- * @author luca
  */
 public class ChessFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -100,6 +98,9 @@ public class ChessFrame extends JFrame {
 		return logPanel;
 	}
 	
+	/*
+	 * Aggiunge il pannello del registro delle mosse.
+	 */
 	private void addLog(){
 		logPanel = new LogPanel(this, controller.getMover());
 		
