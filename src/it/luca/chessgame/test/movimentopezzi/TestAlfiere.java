@@ -1,13 +1,7 @@
 package it.luca.chessgame.test.movimentopezzi;
 
 import static org.junit.Assert.assertTrue;
-import it.luca.chessgame.model.Alfiere;
-import it.luca.chessgame.model.ArrayConfiguration;
-import it.luca.chessgame.model.CasellaVuota;
-import it.luca.chessgame.model.Configuration;
-import it.luca.chessgame.model.Pedone;
-import it.luca.chessgame.model.Re;
-import it.luca.chessgame.model.TilesModel;
+import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
 
 import java.awt.Color;
@@ -29,7 +23,7 @@ public class TestAlfiere {
 		c.set(4, 4, new Alfiere(white));
 		c.set(2, 6, new Pedone(white));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// posso muovermi di quante caselle voglio 
 		// lungo le diagonali

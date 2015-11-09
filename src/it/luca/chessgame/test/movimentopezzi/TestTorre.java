@@ -33,7 +33,7 @@ public class TestTorre {
 		c.set(3, 3, new Torre(black));
 		c.set(4, 3, new Alfiere(white));
 	
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// posso muovermi di quante caselle voglio lungo
 		// la perpendicolare

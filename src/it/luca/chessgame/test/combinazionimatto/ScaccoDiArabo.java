@@ -13,7 +13,6 @@ public class ScaccoDiArabo {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiArabo(){
@@ -41,19 +40,13 @@ public class ScaccoDiArabo {
 		
 		new Simulation(c = c.swap(1, 4, 2, 2), "Il cavallo muove e minaccia il re");
 		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
 		// non è scacco matto: il re può scappare
-		assertTrue(!mover.scaccoMatto());
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
 		
 		new Simulation(c = c.swap(1, 0, 0, 0), "Il re para la minaccia spostandosi nella casella sicura");
 		
 		new Simulation(c = c.swap(6, 1, 0, 1), "La torre dà matto");
 
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

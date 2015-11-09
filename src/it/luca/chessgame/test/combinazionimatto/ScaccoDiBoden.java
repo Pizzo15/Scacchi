@@ -1,16 +1,7 @@
 package it.luca.chessgame.test.combinazionimatto;
 
 import static org.junit.Assert.assertTrue;
-import it.luca.chessgame.model.Alfiere;
-import it.luca.chessgame.model.ArrayConfiguration;
-import it.luca.chessgame.model.CasellaVuota;
-import it.luca.chessgame.model.Cavallo;
-import it.luca.chessgame.model.Configuration;
-import it.luca.chessgame.model.Pedone;
-import it.luca.chessgame.model.Re;
-import it.luca.chessgame.model.Regina;
-import it.luca.chessgame.model.TilesModel;
-import it.luca.chessgame.model.Torre;
+import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
 import it.luca.chessgame.test.Simulation;
 
@@ -22,7 +13,6 @@ public class ScaccoDiBoden {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiBoden(){
@@ -64,9 +54,6 @@ public class ScaccoDiBoden {
 		
 		new Simulation(c = c.swap(4, 6, 0, 2), "L'alfiere dà matto");
 
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

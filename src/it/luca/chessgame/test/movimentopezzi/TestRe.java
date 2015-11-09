@@ -31,7 +31,7 @@ public class TestRe {
 		c.set(3, 4, new Pedone(black));
 		c.set(3, 3, new Pedone(white));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 
 		// mi posso spostare di una casella in una qualsiasi direzione
 		assertTrue(mover.isMoveLegal(4, 4, 5, 4));
@@ -51,7 +51,7 @@ public class TestRe {
 		
 		c.set(6, 4, new Torre(black));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// se il re è sotto scacco
 		// non posso muovere altri pezzi del mio schieramento...
@@ -61,7 +61,7 @@ public class TestRe {
 		//... a meno che non posso mangiare il pezzo che tiene lo scacco
 		c.set(5, 3, new Alfiere(white));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// mangio il pezzo che tiene sotto scacco il re
 		assertTrue(mover.isMoveLegal(5, 3, 6, 4));

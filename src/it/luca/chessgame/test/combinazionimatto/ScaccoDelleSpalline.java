@@ -15,14 +15,11 @@ import org.junit.Test;
  * se il re è autobloccato la donna può dare scacco da sola.
  * Devono essere occupate le due casa di fuga a salto del cavallo
  * dalla posizione della donna.
- * 
- * @author luca
  */
 public class ScaccoDelleSpalline{
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDelleSpalline(){
@@ -55,18 +52,12 @@ public class ScaccoDelleSpalline{
 		new Simulation(c = c.swap(5, 2, 7, 2), "La torre mangia il pedone e minaccia il re");
 		
 		// non è scacco matto: il pezzo che tiene sotto scacco il re può essere mangiato
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(!mover.scaccoMatto());	
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());	
 		
 		new Simulation(c = c.swap(6, 1, 7, 2), "Il pedone para la minaccia mangiando la torre");
 		
 		new Simulation(c = c.swap(4, 2, 5, 1), "La regina dà matto al re bloccato");
 		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

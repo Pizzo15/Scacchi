@@ -12,9 +12,9 @@ public class Mover {
 	private boolean turno;	// T = bianco, F = nero
 	private Stack<Configuration> undos = new Stack<Configuration>();
 	
-	public Mover(Model model){
+	public Mover(Model model, boolean turno){
 		this.model = model;
-		this.turno = true;
+		this.turno = turno;
 	}
 	
 	/**

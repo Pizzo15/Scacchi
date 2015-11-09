@@ -34,7 +34,7 @@ public class TestCavallo {
 		c.set(3, 3, new Torre(black));
 		c.set(4, 3, new Alfiere(white));
 	
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// posso muovermi a "L"
 		assertTrue(mover.isMoveLegal(4, 4, 5, 2));

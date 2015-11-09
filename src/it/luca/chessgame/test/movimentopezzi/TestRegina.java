@@ -32,7 +32,7 @@ public class TestRegina {
 		c.set(5, 5, new Pedone(black));
 		c.set(2, 0, new Re(white));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// posso spostarmi di quante caselle voglio lungo la 
 		// perpendicolare...

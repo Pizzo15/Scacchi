@@ -13,7 +13,6 @@ public class ScaccoDiDamiano {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiDamiano(){
@@ -41,19 +40,13 @@ public class ScaccoDiDamiano {
 		
 		new Simulation(c = c.swap(1, 6, 0, 6), "La torre muove e minaccia il re");
 		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
 		// un pezzo si può intromettere tra il re e chi minaccia: non è scacco matto
-		assertTrue(!mover.scaccoMatto());
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
 		
 		new Simulation(c = c.swap(4, 4, 0, 4), "La regina para la minaccia mettendosi tra la torre e il re");
 		
 		new Simulation(c = c.swap(0, 6, 0, 4), "La torre mangia la regina e dà scacco matto");
 
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

@@ -13,7 +13,6 @@ public class ScaccoDiLucena {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiLucena(){
@@ -65,9 +64,6 @@ public class ScaccoDiLucena {
 
 		new Simulation(c = c.swap(0, 2, 2, 1), "Il cavallo muove e dà matto al re in trappola");
 
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

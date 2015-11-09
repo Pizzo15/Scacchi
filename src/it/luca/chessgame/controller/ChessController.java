@@ -9,7 +9,7 @@ public class ChessController implements Controller {
 	
 	public ChessController(View view){
 		this.view = view;
-		mover = new Mover(view.getModel());
+		mover = new Mover(view.getModel(), true);
 		
 		view.setController(this);
 	}

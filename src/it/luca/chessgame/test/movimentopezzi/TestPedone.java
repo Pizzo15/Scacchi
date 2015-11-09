@@ -34,7 +34,7 @@ public class TestPedone {
 		c.set(3, 3, new Torre(black));
 		c.set(4, 3, new Alfiere(white));
 	
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 		
 		// posso muovermi solo in alto di una casella se bianco
 		assertTrue(mover.isMoveLegal(4, 6, 4, 5));
@@ -50,12 +50,10 @@ public class TestPedone {
 		c.set(5, 5, new Pedone(black));
 		c.set(6, 2, new Torre(white));
 		
-		mover = new Mover(new TilesModel(c));
+		mover = new Mover(new TilesModel(c), true);
 
 		// se un pezzo occupa la casella di fronte non posso mangiarlo
 		assertTrue(!mover.isMoveLegal(5, 1, 5, 2));
-		
-		mover.setTurno(true);
 		
 		// ma posso mangiare i pezzi sulle caselle diagonali adiacenti
 		assertTrue(mover.isMoveLegal(4, 6, 5, 5));

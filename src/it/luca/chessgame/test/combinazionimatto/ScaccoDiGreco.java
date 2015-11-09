@@ -18,7 +18,6 @@ public class ScaccoDiGreco {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiGreco(){
@@ -70,9 +69,6 @@ public class ScaccoDiGreco {
 		
 		new Simulation(c = c.swap(7, 7, 7, 4), "La torre mangia la donna e dà scacco matto");
 
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }

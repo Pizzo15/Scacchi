@@ -14,8 +14,6 @@ import org.junit.Test;
  * Classe di test per la combinazione di matto del 
  * corridoio: la donna da scacco matto al re che è 
  * "bloccato" dai pedoni.
- * 
- * @author luca
  */
 public class ScaccoDelCorridoio {
 	private Configuration c = new ArrayConfiguration();
@@ -52,6 +50,6 @@ public class ScaccoDelCorridoio {
 		new Simulation(c = c.swap(4, 1, 4, 7), "La donna dà matto al re bloccato dai pedoni");
 		
 		// scacco matto
-		assertTrue(new Mover(new TilesModel(c)).scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), true).scaccoMatto());
 	}
 }

@@ -14,14 +14,11 @@ import org.junit.Test;
  * Classe di Test per la simulazione della combinazione di matto 
  * di Anastasia: un cavallo controlla le due case di fuga del re 
  * attaccato con uno scacco di torre.
- * 
- * @author luca
  */
 public class ScaccoDiAnastasia {
 	private Configuration c = new ArrayConfiguration();
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	private Mover mover;
 	
 	@Test
 	public void testScaccoDiAnastasia(){
@@ -53,41 +50,29 @@ public class ScaccoDiAnastasia {
 		new Simulation(c, "Scacco di Anastasia");
 		
 		new Simulation(c = c.swap(4, 1, 5, 3), "Il cavallo si sposta e libera il re alla minaccia della regina");
-
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-
+		
 		// il re può scappare: non è scacco matto
-		assertTrue(!mover.scaccoMatto());
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
 		
 		new Simulation(c = c.swap(5, 0, 6, 0), "Il re scappa nella casella sicura");
 		
 		new Simulation(c = c.swap(2, 3, 5, 0), "La donna insegue il re");
-		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
 
 		// il pezzo che tiene lo scacco può essere mangiato: non è scacco matto
-		assertTrue(!mover.scaccoMatto());
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
 		
 		new Simulation(c = c.swap(6, 0, 5, 0), "Il re para la minaccia mangiando la regina");
 		
 		new Simulation(c = c.swap(2, 7, 2, 0), "La torre dà scacco matto");
 		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
 		// la regina può mettersi tra la torre e il re: non è scacco matto
-		assertTrue(!mover.scaccoMatto());
+		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
 		
 		new Simulation(c = c.swap(3, 6, 3, 0), "La donna salva il re");
 		
 		new Simulation(c = c.swap(2, 0, 3, 0), "La torre mangia la regina dando scacco matto");
-		
-		mover = new Mover(new TilesModel(c));
-		mover.setTurno(false);
-		
+	
 		// la regina può mettersi tra la torre e il re: non è scacco matto
-		assertTrue(mover.scaccoMatto());
+		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
 	}
 }
