@@ -3,7 +3,6 @@ package it.luca.chessgame.test.patta;
 import static org.junit.Assert.assertTrue;
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
-import it.luca.chessgame.test.Simulation;
 
 import java.awt.Color;
 

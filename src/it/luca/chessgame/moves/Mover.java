@@ -332,10 +332,12 @@ public class Mover {
 	 *  può eseguire mosse regolari.
 	 *  - ripetizione di mosse: una certa configurazione si è ripetuta per 3 volte, anche non
 	 *  consecutive.
-	 *  - regola delle 50 mosse: se effettuo 50 mosse consecutive senza muovere un pedone o catturare un pezzo
+	 *  - regola delle 50 mosse: se effettuo 50 mosse consecutive senza muovere un pedone o catturare un pezzo.
+	 *  - teorica: la configurazione attuale è tale da non permettere a nessuno dei giocatori
+	 *  di dichiarare scacco matto all'altro.
 	 */
 	public boolean patta(){
-		boolean stallo, ripetizione, mosse;
+		boolean stallo, ripetizione, mosse, pattaTeorica;
 		
 		stallo = !kingUnderScacco() && !possibleMoves();
 		
@@ -343,7 +345,103 @@ public class Mover {
 		
 		mosse = regolaMosse > 50;
 		
-		return stallo || ripetizione || mosse;
+		pattaTeorica = checkPattaTeorica();
+		
+		return stallo || ripetizione || mosse || pattaTeorica;
+	}
+	
+	/**
+	 * Controlla se la configurazione attuale non può permettere lo scacco matto 
+	 * a nessuno dei due giocatori:
+	 *  - R vs R
+	 *  - R vs R + A
+	 *  - R vs R + C
+	 *  - R + Acc vs R + Acc
+	 *  - R + Acs vs R + Acs
+	 */
+	private boolean checkPattaTeorica(){
+		ArrayList<Pezzo> remaining = remainingPieces();
+		
+		// R vs R
+		if(remaining.size() == 2)
+			return true;
+		else if(remaining.size() == 3)
+			// R vs R + A o R + C
+			return checkBishop() || checkKnight();
+		else if(remaining.size() == 4)
+			// R + Acs vs R + Acs || R + Acc vs R + Acc
+			return checkLastFour();
+		else
+			return false;
+	}
+	
+	/**
+	 * Controlla se nei pezzi rimasti ci sono i due alfieri con campo uguale.
+	 */
+	private boolean checkLastFour(){
+		for(Pezzo p: remainingPieces())
+			if(p instanceof Re)
+				continue;
+			else if(p instanceof Alfiere)
+				continue;
+			else
+				return false;
+		
+		// Sono rimasti due re e due alfieri
+		// cerco i due alfieri per confrontare il loro sfondo
+		return checkBishops();	
+	}
+	
+	private boolean checkBishops(){
+		ArrayList<Point> res = new ArrayList<Point>();
+		
+		for(int x = 0; x < 8; x++)
+			for(int y = 0; y < 8; y++)
+				if(model.at(x, y) instanceof Alfiere)
+					res.add(new Point(x, y));
+		
+		if(res.size() == 2){
+			Point p1 = res.get(0); // 1° alfiere
+			Point p2 = res.get(1); // 2° alfiere
+			return ((p1.x + p1.y) % 2 == (p2.x + p2.y) % 2);
+		} else
+			return false;
+	}
+	
+	/**
+	 * Controlla se nei pezzi rimasti c'è un cavallo.
+	 */
+	private boolean checkKnight(){
+		for(Pezzo p: remainingPieces())
+			if(p instanceof Cavallo)
+				return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Controlla se nei pezzi rimasti c'è un alfiere.
+	 */
+	private boolean checkBishop(){
+		for(Pezzo p: remainingPieces())
+			if(p instanceof Alfiere)
+				return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Ritorna una lista dei pezzi rimasti sulla scacchiera.
+	 */
+	private ArrayList<Pezzo> remainingPieces(){
+		ArrayList<Pezzo> res = new ArrayList<Pezzo>();
+		
+		for(int x = 0; x < 8; x++)
+			for(int y = 0; y < 8; y++)
+				if(!(model.at(x, y) instanceof CasellaVuota))
+					res.add(model.at(x, y));
+		
+		return res;
 	}
 	
 	private boolean checkRipetizione(){
