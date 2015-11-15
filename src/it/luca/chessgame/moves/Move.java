@@ -20,7 +20,7 @@ public class Move {
 	}
 
 	/**
-	 * Ritorna una stringa che descrive la mossa effettuata
+	 * Ritorna una stringa che descrive la mossa effettuata.
 	 */
 	public String toString(){
 		return (char) (fromX + 'a') + "" + invertiOrdinate(fromY) + (eat ? " x " : " - ") + (char) (toX + 'a') + 

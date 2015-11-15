@@ -19,4 +19,10 @@ public abstract class Pezzo {
 	
 	public Color getColor(){ return this.color; }
 	public ImageIcon getImage(){ return this.image; }
+	
+	@Override
+	public boolean equals(Object other){
+		return other instanceof Pezzo && color == ((Pezzo) other).color &&
+				image.toString().equals(((Pezzo) other).getImage().toString());
+	}
 }

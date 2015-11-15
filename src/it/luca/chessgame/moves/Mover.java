@@ -11,12 +11,13 @@ public class Mover {
 	private final Model model;
 	private boolean turno;	// T = bianco, F = nero
 	private Stack<Configuration> undos = new Stack<Configuration>();
+	private static int regolaMosse = 1; // Conteggia il n° di mosse consecutive senza catture o senza muovere un pedone
 	
 	public Mover(Model model, boolean turno){
 		this.model = model;
 		this.turno = turno;
 	}
-	
+
 	/**
 	 * Esegue la mossa (fromX, fromY) -> (toX, toY)
 	 * se questa è lecita.
@@ -25,6 +26,14 @@ public class Mover {
 		if(moveLegal(fromX, fromY, toX, toY)){
 			// salvo la configurazione corrente
 			undos.push(model.getConfiguration());
+			
+			// Regola 50 mosse: se ho effettuato una mossa che non è una cattura o che non muove un pedone
+			// incremento il contatore, altrimenti lo azzero.
+			if(!(model.at(fromX, fromY) instanceof Pedone) && model.at(toX, toY) instanceof CasellaVuota)
+				regolaMosse++;
+			else
+				regolaMosse = 1;
+			
 			// aggiorno la configurazione scambiando le caselle
 			model.setConfiguration(model.getConfiguration().swap(fromX, fromY, toX, toY));
 			// cambio il turno
@@ -46,6 +55,11 @@ public class Mover {
 	public void setTurno(boolean turno){
 		this.turno = turno;
 	}
+
+	/**
+	 * Ritorna il conteggio delle mosse (utilizzato per il testing).
+	 */
+	public int getMosse(){ return regolaMosse; }
 
 	/**
 	 * Scacco matto: imposto una nuova partita nel caso di si, altrimenti esco.
@@ -309,6 +323,39 @@ public class Mover {
 			return false;
 		
 		return true;
+	}
+	
+	/**
+	 * Ritorna true se si verifica una situazione di patta che comporta la terminazione della
+	 * partita:
+	 *  - stallo: il giocatore che ha il tratto non ha il re sotto scacco ma non 
+	 *  può eseguire mosse regolari.
+	 *  - ripetizione di mosse: una certa configurazione si è ripetuta per 3 volte, anche non
+	 *  consecutive.
+	 *  - regola delle 50 mosse: se effettuo 50 mosse consecutive senza muovere un pedone o catturare un pezzo
+	 */
+	public boolean patta(){
+		boolean stallo, ripetizione, mosse;
+		
+		stallo = !kingUnderScacco() && !possibleMoves();
+		
+		ripetizione = checkRipetizione();
+		
+		mosse = regolaMosse > 50;
+		
+		return stallo || ripetizione || mosse;
+	}
+	
+	private boolean checkRipetizione(){
+		int count = 1;
+		
+		for(Configuration c: undos)
+			if(c.compare(model.getConfiguration()))
+				count++;
+		
+		System.out.println(count);
+		
+		return count > 2;
 	}
 	
 	/**

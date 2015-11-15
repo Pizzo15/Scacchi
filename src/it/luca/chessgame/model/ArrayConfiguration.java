@@ -2,7 +2,7 @@ package it.luca.chessgame.model;
 
 import java.awt.Color;
 
-public class ArrayConfiguration extends AbstractConfiguration {
+public class ArrayConfiguration implements Configuration {
 	private final Pezzo[][] tiles;
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
@@ -74,5 +74,20 @@ public class ArrayConfiguration extends AbstractConfiguration {
 		res.set(fromX, fromY, new CasellaVuota());
 		
 		return res;
+	}
+	
+	@Override
+	public boolean compare(Object other){
+		if(other instanceof Configuration){
+			Configuration otherAsConfiguration = (Configuration) other;
+			for(int y = 0; y < 8; y++)
+				for(int x = 0; x < 8; x++)
+					if(!at(x,y).equals(otherAsConfiguration.at(x, y)))
+						return false;
+			
+			return true;
+		}
+
+		return false;
 	}
 }

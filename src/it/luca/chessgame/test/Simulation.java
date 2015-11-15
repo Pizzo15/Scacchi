@@ -53,5 +53,7 @@ public class Simulation {
 			try {
 				Thread.sleep(200);
 			} catch (InterruptedException e) { }
+		
+		frame.dispose();
 		}
 }

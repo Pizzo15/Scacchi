@@ -10,4 +10,6 @@ public interface Configuration {
 	
 	// produce una nuova configurazione dove due tessere sono state scambiate
 	Configuration swap(int fromX, int fromY, int toX, int toY);
+	
+	boolean compare(Object other);
 }
