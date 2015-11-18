@@ -156,11 +156,10 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 			controller.onClick(pieceX, pieceY, x, y);
 			
 			// controllo se ho dato scacco matto
-			if(controller.getMover().scaccoMatto()){
-				JOptionPane.showMessageDialog(JOptionPane.getRootFrame(), "Scacco Matto!", 
-						(!controller.getMover().getTurno() ? "Bianco" : "Nero") + " vince!", 0);
-				controller.getMover().newGame();
-			}
+			if(controller.getMover().scaccoMatto())
+				showEndGameDialog("Scacco matto!");
+			else if(controller.getMover().patta())
+				showEndGameDialog("Patta!");
 		}
 
 		// aggiorno la view
@@ -179,4 +178,9 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 
 	@Override
 	public void mouseExited(MouseEvent e) { }
+	
+	@Override
+	public void showEndGameDialog(String msg){
+		new EndGameDialog(frame, controller.getMover(), msg).setVisible(true);
+	}
 }

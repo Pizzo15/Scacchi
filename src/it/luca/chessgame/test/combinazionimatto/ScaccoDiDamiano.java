@@ -3,50 +3,38 @@ package it.luca.chessgame.test.combinazionimatto;
 import static org.junit.Assert.assertTrue;
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
-import it.luca.chessgame.test.Simulation;
-
-import java.awt.Color;
 
 import org.junit.Test;
 
 public class ScaccoDiDamiano {
-	private Configuration c = new ArrayConfiguration();
-	private final Color white = Color.WHITE;
-	private final Color black = Color.BLACK;
+	private char[][] pezzi = {
+			{ 'R', 'T', ' ', ' ', ' ', ' ', ' ', 'T' }, 
+			{ 'P', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', 'D', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', 't', ' ', ' ', ' ', 'd', ' ', ' ' }, 
+			{ 'r', 't', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+	};
+	private Mover mover;
 	
 	@Test
 	public void testScaccoDiDamiano(){
-		// inizializzo la scacchiera
-		for(int x = 0; x < 8; x++)
-			for(int y = 0; y < 8; y++)
-				c.set(x, y, new CasellaVuota());
+		mover = new Mover(new TilesModel(new ArrayConfiguration(pezzi)), true);
 
-		c.set(1, 0, new Torre(black));
-		c.set(7, 0, new Torre(black));
-		c.set(0, 1, new Pedone(black));
-		c.set(4, 4, new Regina(black));
-		c.set(0, 0, new Re(black));
-	
-		c.set(1, 6, new Torre(white));
-		c.set(1, 7, new Torre(white));
-		c.set(5, 6, new Regina(white));
-		c.set(0, 7, new Re(white));
-	
-		new Simulation(c, "Scacco di Damiano");
-		
-		new Simulation(c = c.swap(5, 6, 0, 1), "La donna mangia il pedone e minaccia il re");
-		
-		new Simulation(c = c.swap(0, 0, 0, 1), "Il re para la minaccia mangiando la regina");
-		
-		new Simulation(c = c.swap(1, 6, 0, 6), "La torre muove e minaccia il re");
-		
-		// un pezzo si può intromettere tra il re e chi minaccia: non è scacco matto
-		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());
-		
-		new Simulation(c = c.swap(4, 4, 0, 4), "La regina para la minaccia mettendosi tra la torre e il re");
-		
-		new Simulation(c = c.swap(0, 6, 0, 4), "La torre mangia la regina e dà scacco matto");
+		mover.move(5, 6, 0, 1);
 
-		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
+		mover.move(0, 0, 0, 1);
+
+		mover.move(1, 6, 0, 6);
+
+		mover.move(4, 4, 0, 4);
+
+		mover.move(0, 6, 0, 4);
+
+		mover.showSimulation(mover.getModel().getConfiguration());
+
+		assertTrue(mover.scaccoMatto());
 	}
 }

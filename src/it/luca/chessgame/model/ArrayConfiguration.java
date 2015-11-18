@@ -3,6 +3,16 @@ package it.luca.chessgame.model;
 import java.awt.Color;
 
 public class ArrayConfiguration implements Configuration {
+	private final char[][] init = {
+			{ 'T', 'C', 'A', 'D', 'R', 'A', 'C', 'T' }, 
+			{ 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ 'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p' }, 
+			{ 't', 'c', 'a', 'd', 'r', 'a', 'c', 't' }, 
+	};
 	private final Pezzo[][] tiles;
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
@@ -13,49 +23,54 @@ public class ArrayConfiguration implements Configuration {
 			this.tiles[y] = tiles[y].clone();
 	}
 	
-	public ArrayConfiguration(){
-		tiles = new Pezzo[8][8];
-	
-		configurazioneIniziale();
-	}
-
-	private void configurazioneIniziale(){		
-		// inizializzo il modello della scacchiera...
-		// inizializzo tutte le caselle come vuote
+	public ArrayConfiguration(char[][] tiles){
+		this.tiles = new Pezzo[8][8];
 		for(int y = 0; y < 8; y++)
 			for(int x = 0; x < 8; x++)
-				set(x, y, new CasellaVuota());
-
-		// poi aggiungo i pezzi...
-		// la prima riga contiene i pezzi neri
-		set(0, 0, new Torre(black));
-		set(1, 0, new Cavallo(black));
-		set(2, 0, new Alfiere(black));
-		set(3, 0, new Regina(black));
-		set(4, 0, new Re(black));
-		set(5, 0, new Alfiere(black));
-		set(6, 0, new Cavallo(black));
-		set(7, 0, new Torre(black));
-		
-		// la seconda riga contiene i pedoni neri
-		for(int x = 0; x < 8; x++)
-			set(x, 1, new Pedone(black));
-		
-		// la penultima riga contiene i pedoni bianchi
-		for(int x = 0; x < 8; x++)
-			set(x, 6, new Pedone(white));
-		
-		// l'ultima riga contiene i pezzi bianchi
-		set(0, 7, new Torre(white));
-		set(1, 7, new Cavallo(white));
-		set(2, 7, new Alfiere(white));
-		set(3, 7, new Regina(white));
-		set(4, 7, new Re(white));
-		set(5, 7, new Alfiere(white));
-		set(6, 7, new Cavallo(white));
-		set(7, 7, new Torre(white));
+				set(x, y, decode(tiles[y][x]));
 	}
-	
+
+	public ArrayConfiguration(){		
+		tiles = new Pezzo[8][8];
+		for(int y = 0; y < 8; y++)
+			for(int x = 0; x < 8; x++)
+				set(x, y, decode(init[y][x]));
+		
+	}
+
+	private Pezzo decode(char tile){
+		// Maiuscolo = nero, minuscolo = bianco
+
+		switch(tile){
+		case 'p':
+			return new Pedone(white);
+		case 'P':
+			return new Pedone(black);
+		case 't':
+			return new Torre(white);
+		case 'T':
+			return new Torre(black);
+		case 'a':
+			return new Alfiere(white);
+		case 'A':
+			return new Alfiere(black);
+		case 'c':
+			return new Cavallo(white);
+		case 'C':
+			return new Cavallo(black);
+		case 'r':
+			return new Re(white);
+		case 'R':
+			return new Re(black);
+		case 'd':
+			return new Regina(white);
+		case 'D':
+			return new Regina(black);
+		default:
+			return new CasellaVuota();
+		}
+	}
+
 	@Override
 	public Pezzo at(int x, int y){
 		return tiles[x][y];

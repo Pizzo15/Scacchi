@@ -3,50 +3,38 @@ package it.luca.chessgame.test.mattointre;
 import static org.junit.Assert.assertTrue;
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
-import it.luca.chessgame.test.Simulation;
-
-import java.awt.Color;
 
 import org.junit.Test;
 
 public class ScaccoMattoInTreMosse5 {
-	private Configuration c = new ArrayConfiguration();
-	private final Color white = Color.WHITE;
-	private final Color black = Color.BLACK;
+	private char[][] pezzi = {
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', 'c', ' ', ' ', ' ' }, 
+			{ 'R', 'C', ' ', 'c', ' ', ' ', 'D', ' ' }, 
+			{ ' ', 't', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', 'd', ' ', ' ', ' ', 'T', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'r' }, 
+	};
+	private Mover mover;
 	
 	@Test
 	public void testScaccoMattoInTreMosse5(){
-		// inizializzo la scacchiera
-		for(int x = 0; x < 8; x++)
-			for(int y = 0; y < 8; y++)
-				c.set(x, y, new CasellaVuota());
-			
-		// aggiungo i pezzi bianchi
-		c.set(1, 4, new Torre(white));
-		c.set(7, 7, new Re(white));
-		c.set(4, 2, new Cavallo(white));
-		c.set(3, 3, new Cavallo(white));
-		c.set(1, 6, new Regina(white));
+		mover = new Mover(new TilesModel(new ArrayConfiguration(pezzi)), true);
 		
-		// aggiungo i pezzi neri
-		c.set(0, 3, new Re(black));
-		c.set(6, 3, new Regina(black));
-		c.set(1, 3, new Cavallo(black));
-		c.set(5, 6, new Torre(black));
+		mover.move(1, 4, 0, 4);
 		
-		new Simulation(c, "Scacco matto in tre mosse (5)");
+		mover.move(0, 3, 0, 4);
 		
-		new Simulation(c = c.swap(1, 4, 0, 4), "La torre muove e minaccia il re");
+		mover.move(4, 2, 2, 3);
 		
-		new Simulation(c = c.swap(0, 3, 0, 4), "Il re mangia la torre sottraendosi alla minaccia");
-		
-		new Simulation(c = c.swap(4, 2, 2, 3), "Il cavallo minaccia il re");
-		
-		new Simulation(c = c.swap(0, 4, 0, 3), "Il re fugge nella casella sicura");
-		
-		new Simulation(c = c.swap(1, 6, 1, 4), "La regina dà matto");
-		
-		// scacco matto
-		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
+		mover.move(0, 4, 0, 3);
+
+		mover.move(1, 6, 1, 4);
+
+		mover.showSimulation(mover.getModel().getConfiguration());
+
+		assertTrue(mover.scaccoMatto());
 	}
 }

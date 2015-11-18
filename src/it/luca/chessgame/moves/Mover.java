@@ -3,8 +3,6 @@ package it.luca.chessgame.moves;
 import java.awt.*;
 import java.util.*;
 
-import javax.swing.*;
-
 import it.luca.chessgame.model.*;
 
 public class Mover {
@@ -61,27 +59,13 @@ public class Mover {
 	 */
 	public int getMosse(){ return regolaMosse; }
 
-	/**
-	 * Scacco matto: imposto una nuova partita nel caso di si, altrimenti esco.
-	 * Non scacco matto: nel caso di selezione negativa resto sulla partita attuale
-	 * e non faccio nulla.
-	 */
-	public void newGame(){
-		int selection = JOptionPane.showConfirmDialog(JOptionPane.getRootFrame(), "Nuova partita?", "", 
-				JOptionPane.YES_NO_OPTION);
-		if(selection == JOptionPane.YES_OPTION) {
-				setNewGame();
-		} else {
-			if(scaccoMatto())
-				System.exit(0);
-		}
-	}
-	
+	public Model getModel(){ return model; }
+
 	/**
 	 * Imposta la configurazione a quella iniziale e svuota i registri delle mosse
 	 * effettuate.
 	 */
-	private void setNewGame(){
+	public void newGame(){
 		turno = true;
 		undos.removeAllElements();
 		model.setConfiguration(new ArrayConfiguration());
@@ -451,8 +435,6 @@ public class Mover {
 			if(c.compare(model.getConfiguration()))
 				count++;
 		
-		System.out.println(count);
-		
 		return count > 2;
 	}
 	
@@ -583,5 +565,12 @@ public class Mover {
 			freeTiles.add(new Point(x + 1, y));
 		
 		return freeTiles;
+	}
+	
+	/**
+	 * Mostra una simulazione delle mosse effettuate.
+	 */
+	public void showSimulation(Configuration last){
+		new Simulation(undos, last);
 	}
 }

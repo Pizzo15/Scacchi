@@ -2,11 +2,8 @@ package it.luca.chessgame.test.combinazionimatto;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
-
 import it.luca.chessgame.model.*;
 import it.luca.chessgame.moves.Mover;
-import it.luca.chessgame.test.Simulation;
 
 import org.junit.Test;
 
@@ -17,47 +14,37 @@ import org.junit.Test;
  * dalla posizione della donna.
  */
 public class ScaccoDelleSpalline{
-	private Configuration c = new ArrayConfiguration();
-	private final Color white = Color.WHITE;
-	private final Color black = Color.BLACK;
+	private char[][] pezzi = {
+			{ 'T', ' ', ' ', 'D', ' ', ' ', 'R', 'T' }, 
+			{ 'P', 'P', ' ', ' ', ' ', ' ', 'P', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', 't', ' ', 'P' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', 'd', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'p' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', 'r', ' ' }, 
+			{ ' ', ' ', ' ', ' ', ' ', ' ', 'p', ' ' }, 
+	};
+	private Mover mover;
 	
 	@Test
 	public void testScaccoDelleSpalline(){
-		// inizializzo la scacchiera
-		for(int x = 0; x < 8; x++)
-			for(int y = 0; y < 8; y++)
-				c.set(x, y, new CasellaVuota());
+		mover = new Mover(new TilesModel(new ArrayConfiguration(pezzi)), true);
 
-		c.set(0, 0, new Torre(black));
-		c.set(0, 1, new Pedone(black));
-		c.set(1, 1, new Pedone(black));
-		c.set(3, 0, new Regina(black));
-		c.set(6, 1, new Pedone(black));
-		c.set(7, 2, new Pedone(black));
-		c.set(6, 0, new Re(black));
-		c.set(7, 0, new Torre(black));
-			
-		c.set(5, 2, new Torre(white));
-		c.set(6, 4, new Regina(white));
-		c.set(7, 5, new Pedone(white));
-		c.set(6, 6, new Re(white));
-		c.set(6, 7, new Pedone(white));
-
-		new Simulation(c, "Scacco delle spalline");
-
-		new Simulation(c = c.swap(6, 4, 4, 2), "La donna muove e minaccia il re");
+		mover.move(6, 4, 4, 2);
 		
-		new Simulation(c = c.swap(6, 0, 7, 1), "Il re scappa in una casella sicura");
+		mover.move(6, 0, 7, 1);
 		
-		new Simulation(c = c.swap(5, 2, 7, 2), "La torre mangia il pedone e minaccia il re");
+		mover.move(5, 2, 7, 2);
 		
 		// non è scacco matto: il pezzo che tiene sotto scacco il re può essere mangiato
-		assertTrue(!new Mover(new TilesModel(c), false).scaccoMatto());	
+		assertTrue(!mover.scaccoMatto());	
 		
-		new Simulation(c = c.swap(6, 1, 7, 2), "Il pedone para la minaccia mangiando la torre");
+		mover.move(6, 1, 7, 2);
 		
-		new Simulation(c = c.swap(4, 2, 5, 1), "La regina dà matto al re bloccato");
+		mover.move(4, 2, 5, 1);
+
+		mover.showSimulation(mover.getModel().getConfiguration());
 		
-		assertTrue(new Mover(new TilesModel(c), false).scaccoMatto());
+		assertTrue(mover.scaccoMatto());
 	}
 }

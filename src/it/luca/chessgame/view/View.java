@@ -8,4 +8,6 @@ public interface View {
 	void setController(Controller controller);
 	
 	void onConfigurationChange();
+	
+	void showEndGameDialog(String msg);
 }
