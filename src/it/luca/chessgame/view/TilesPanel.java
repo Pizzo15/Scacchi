@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import it.luca.chessgame.controller.Controller;
 import it.luca.chessgame.model.*;
-import it.luca.chessgame.moves.Move;
+import it.luca.chessgame.moves.Mover;
 
 import javax.swing.*;
 
@@ -21,6 +21,8 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 	private Controller controller;
 	private static int count = 1;
 	private static int pieceX, pieceY;
+	private Mover mover;
+	private boolean addFinale = true;
 	
 	public TilesPanel(Model model, ChessFrame frame){
 		this.model = model;
@@ -120,6 +122,8 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		LogPanel log = frame.getLog();
 		int dim = this.getSize().width / 8;
 		boolean help = ((MenuBar) frame.getContentPane().getComponent(3)).getHelp();
+		boolean player = controller.getMover().getTurno();
+		mover = controller.getMover();
 		
 		// ottengo le coordinate della casella cliccata
 		int x = e.getX() / dim;
@@ -130,35 +134,43 @@ public class TilesPanel extends JPanel implements View, MouseListener {
 		// e mostro le caselle raggiungibili
 		if(count % 2 != 0){
 			if(!(model.at(x, y) instanceof CasellaVuota) && 
-					(controller.getMover().getTurno() ? model.at(x, y).getColor() == Color.WHITE 
+					(player ? model.at(x, y).getColor() == Color.WHITE 
 					: model.at(x, y).getColor() == Color.BLACK)){
 				pieceX = x;
 				pieceY = y;
 				
+				// Se sono stati attivati i suggerimenti ed è stato selezionato un pezzo
+				// movibile evidenzio le caselle raggiungibili
 				if(help)
 					highlightReachableTiles(x, y);
 				
 				count++;
 			} else {
+				// Se sono stati attivati i suggerimenti ed è stato selezionato una casella
+				// non movibile evidenzio i pezzi movibili
 				if(help)
-					highlightMovablePieces(controller.getMover().getTurno() ? Color.WHITE : Color.BLACK);
+					highlightMovablePieces(player ? Color.WHITE : Color.BLACK);
 			}
 		} else {
 			// 2° click: se la casella cliccata è tra le raggiungibili muovo
 			cleanReachableTiles();
 			count++;
 			
-			// se la mossa è legale la aggiungo al registro
-			if(controller.getMover().isMoveLegal(pieceX, pieceY, x, y))
-				log.insert(new Move(pieceX, pieceY, x, y, !(model.at(x, y) instanceof CasellaVuota)).toString(), 
-						model.at(pieceX, pieceY).getColor() == Color.WHITE);
+			// se la mossa è legale la aggiungo al registro del giocatore che ha mosso
+			if(mover.isMoveLegal(pieceX, pieceY, x, y)){
+				log.insert(mover.toString(pieceX, pieceY, x, y), player);
+				addFinale = true;
+			}
 			
 			controller.onClick(pieceX, pieceY, x, y);
 			
-			// controllo se ho dato scacco matto
-			if(controller.getMover().scaccoMatto())
+			if(mover.kingUnderScacco() && addFinale && !mover.scaccoMatto()){
+				log.addFinale("+", player);
+				addFinale = false;
+			} else if(mover.scaccoMatto()){
+				log.addFinale("#", player);
 				showEndGameDialog("Scacco matto!");
-			else if(controller.getMover().patta())
+			} else if(mover.patta())
 				showEndGameDialog("Patta!");
 		}
 

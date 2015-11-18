@@ -10,7 +10,7 @@ import javax.swing.*;
 public class EndGameDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
-	public EndGameDialog(JFrame owner, Mover mover, String msg){
+	public EndGameDialog(ChessFrame owner, Mover mover, String msg){
 		setSize(250, 100);
 		setResizable(false);
 		
@@ -27,6 +27,9 @@ public class EndGameDialog extends JDialog {
 			{
 				dispose();
 				mover.newGame();
+				
+				owner.getLog().clean();
+				
 				owner.validate();
 				owner.repaint();
 			});

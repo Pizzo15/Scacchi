@@ -9,8 +9,7 @@ public abstract class Pezzo {
 	private final ImageIcon image;
 	
 	/**
-	 * Un pezzo è identificato dal colore, dall'icona che lo rappresenta
-	 * e dalle sue coordinate
+	 * Un pezzo è identificato dal colore e dall'icona che lo rappresenta.
 	 */
 	public Pezzo(Color color, ImageIcon image){
 		this.color = color;

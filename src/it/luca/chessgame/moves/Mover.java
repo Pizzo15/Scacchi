@@ -49,10 +49,6 @@ public class Mover {
 	public boolean getTurno(){
 		return turno;
 	}
-	
-	public void setTurno(boolean turno){
-		this.turno = turno;
-	}
 
 	/**
 	 * Ritorna il conteggio delle mosse (utilizzato per il testing).
@@ -566,6 +562,49 @@ public class Mover {
 		
 		return freeTiles;
 	}
+	
+	/**
+	 * Ritorna una stringa rappresentante la mossa effettuata secondo le regole della notazione
+	 * algebrica abbreviata.
+	 */
+	public String toString(int fromX, int fromY, int toX, int toY){
+		boolean eat = !(model.at(toX, toY) instanceof CasellaVuota);
+		
+		return iniziale(fromX, fromY, eat) + (eat ? "x" : "") + (char) (toX + 'a') + 
+				invertiOrdinate(toY);
+	}
+	
+	/**
+	 * Ritorna l'iniziale del pezzo che muove se questo non è un pedone.
+	 * Nel caso del pedone se la mossa è una cattura mostro l'ascissa iniziale.
+	 */
+	private String iniziale(int fromX, int fromY, boolean eat){	
+		Pezzo p = model.at(fromX,  fromY);
+		
+		if(p instanceof Regina)
+			return "D";
+		else if(p instanceof Re)
+			return "R";
+		else if(p instanceof Alfiere)
+			return "A";
+		else if(p instanceof Cavallo)
+			return "C";
+		else if(p instanceof Torre)
+			return "T";
+		else if(p instanceof Pedone && eat)
+			return (char) (fromX + 'a') + "";
+		else
+			return "";
+	}
+	
+	/**
+	 * L'array ha orientamento crescente. Devo invertire le ordinate
+	 * in modo che l'ordinamento stampato risulti decrescente.
+	 */
+	private int invertiOrdinate(int y){
+		return Math.abs(y - 7) + 1;
+	}
+
 	
 	/**
 	 * Mostra una simulazione delle mosse effettuate.

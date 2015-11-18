@@ -16,7 +16,14 @@ public class ArrayConfiguration implements Configuration {
 	private final Pezzo[][] tiles;
 	private final Color white = Color.WHITE;
 	private final Color black = Color.BLACK;
-	
+
+	public ArrayConfiguration(){		
+		tiles = new Pezzo[8][8];
+		for(int y = 0; y < 8; y++)
+			for(int x = 0; x < 8; x++)
+				set(x, y, decode(init[y][x]));
+	}
+
 	public ArrayConfiguration(Pezzo[][] tiles){
 		this.tiles = new Pezzo[8][];
 		for(int y = 0; y < 8; y++)
@@ -28,14 +35,6 @@ public class ArrayConfiguration implements Configuration {
 		for(int y = 0; y < 8; y++)
 			for(int x = 0; x < 8; x++)
 				set(x, y, decode(tiles[y][x]));
-	}
-
-	public ArrayConfiguration(){		
-		tiles = new Pezzo[8][8];
-		for(int y = 0; y < 8; y++)
-			for(int x = 0; x < 8; x++)
-				set(x, y, decode(init[y][x]));
-		
 	}
 
 	private Pezzo decode(char tile){

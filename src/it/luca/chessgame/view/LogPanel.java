@@ -9,23 +9,31 @@ import javax.swing.text.BadLocationException;
 
 public class LogPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
-	private JTextArea whiteArea, blackArea;
-	private final String whiteTitle = "Bianco";
-	private final String blackTitle = "Nero";
+	private JTextArea whiteArea, blackArea, countArea;
+	private final String whiteTitle = " Bianco";
+	private final String blackTitle = " Nero";
 	private static int count = 1;
 	
 	public LogPanel(JFrame owner, Mover mover){
-		whiteArea = new JTextArea(whiteTitle, 35, 10);
+		countArea = new JTextArea(" #", 35, 2);
+		countArea.setEditable(false);
+		countArea.setBackground(getBackground());
+		
+		whiteArea = new JTextArea(whiteTitle, 35, 7);
 		whiteArea.setEditable(false);
 		whiteArea.setBackground(getBackground());
 		
-		blackArea = new JTextArea(blackTitle, 35, 10);
+		blackArea = new JTextArea(blackTitle, 35, 7);
 		blackArea.setEditable(false);
 		blackArea.setBackground(getBackground());
 		
-		JScrollPane scrollPane = new JScrollPane(whiteArea);
+		JScrollPane scrollPane = new JScrollPane(countArea);
 		
 		add(scrollPane, BorderLayout.WEST);
+		
+		scrollPane = new JScrollPane(whiteArea);
+		
+		add(scrollPane, BorderLayout.CENTER);
 		
 		scrollPane = new JScrollPane(blackArea);
 		
@@ -36,21 +44,34 @@ public class LogPanel extends JPanel{
 	 * Inserisce move nell'area di testo di player.
 	 */
 	public void insert(String move, boolean player){
-		if(player)
-			whiteArea.append("\n" + count + ": " + move);
-		else {
-			blackArea.append("\n" + count + ": " + move);
+		if(player) {
+			countArea.append("\n " + count);
+			whiteArea.append("\n " + move);
+		} else {
+			blackArea.append("\n " + move);
 			count++;
 		}
+	}
+	
+	/**
+	 * Aggiunge un simbolo che indica una situazione di scacco o
+	 * scacco matto nel registro.
+	 */
+	public void addFinale(String finale, boolean player){
+		if(player)
+			whiteArea.append(finale);
+		else
+			blackArea.append(finale);
 	}
 	
 	/**
 	 * Rimuove l'ultima mossa inserita nell'area di testo di player.
 	 */
 	public void undo(boolean player) throws BadLocationException{
-		if(player)
+		if(player){
 			removeLastLine(whiteArea);
-		else {
+			removeLastLine(countArea);
+		} else {
 			removeLastLine(blackArea);
 			count--;
 		}
@@ -69,6 +90,7 @@ public class LogPanel extends JPanel{
 	 * Ripristina la situazione iniziale delle aree di testo.
 	 */
 	public void clean(){
+		countArea.setText(" #");
 		whiteArea.setText(whiteTitle);
 		blackArea.setText(blackTitle);
 		count = 1;
